@@ -1,0 +1,19 @@
+#include "../include/vk.h"
+
+int createCommandBuffer(const VkDevice *const device, VkCommandPool* commandPool, VkCommandBuffer* commandBuffers)
+{
+	VkCommandBufferAllocateInfo allocInfo = {};
+	allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	allocInfo.commandPool = *commandPool;
+	allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+	allocInfo.commandBufferCount = IMAGE_COUNT;
+
+	if (vkAllocateCommandBuffers(*device, &allocInfo, commandBuffers) != VK_SUCCESS)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'failed to create commandBuffer'" RESET_COLOR "\n", __func__, __LINE__);
+		return -1;
+	}
+	printf("- create " BLUE "commandBuffer " GREEN "success!" RESET_COLOR "\n");
+
+	return 0;
+}

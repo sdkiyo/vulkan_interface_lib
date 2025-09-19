@@ -1,0 +1,23 @@
+
+
+
+
+
+
+	VkApplicationInfo applicationInfo = {
+		VK_STRUCTURE_TYPE_APPLICATION_INFO,// sType
+		VK_NULL_HANDLE,		// pNext
+		VK_NULL_HANDLE,		// pApplicationName
+		0,			// applicationVersion
+		VK_NULL_HANDLE,		// pEngineName
+		0,			// engineVersion
+		VK_API_VERSION_1_4	// apiVersion
+	};
+
+	VkApplicationInfo appInfo;
+        appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+        appInfo.pApplicationName = VK_NULL_HANDLE;
+        appInfo.pEngineName = VK_NULL_HANDLE;
+        appInfo.applicationVersion = 0;
+        appInfo.engineVersion = 0;
+        appInfo.apiVersion = VK_API_VERSION_1_4;

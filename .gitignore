@@ -1,0 +1,2 @@
+/tests/*/build/*
+!/tests/*/build/helper-file.txt
