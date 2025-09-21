@@ -17,8 +17,28 @@ int main()
 		exit(-1);
 	}
 
-	lvData lvdata;
-	lvInitVulkan(&lvdata, window);
+	lvData lvdata = {};
+	const char *const layers[] = {
+	//	"VK_LAYER_KHRONOS_validation",
+		"VK_LAYER_KHRONOS_validation"
+	};
+
+	const char *const instanceExtensions[] = {
+		"VK_KHR_surface",
+		"VK_KHR_wayland_surface",
+		"VK_EXT_debug_utils"
+	};
+	const char *const deviceExtensions[] = {"VK_KHR_swapchain"};
+	lvParam param = {};
+	param.lvdata = &lvdata;
+	param.validationLayersCount = 1;
+	param.validationLayers = layers;
+	param.instanceExtensionsCount = 3;
+	param.instanceExtensions = instanceExtensions;
+	param.deviceExtensionsCount = 1;
+	param.deviceExtensions = deviceExtensions;
+	param.imageCount = 4;
+	lvInitVulkan(&param, window);
 
 	char ch;
 	while(!glfwWindowShouldClose(window))

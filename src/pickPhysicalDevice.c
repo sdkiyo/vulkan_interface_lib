@@ -14,17 +14,16 @@ int lvPickPhysicalDevice(const VkInstance *const instance, VkPhysicalDevice *con
 	VkPhysicalDevice *devices = malloc(deviceCount * sizeof(VkPhysicalDevice));
 	vkEnumeratePhysicalDevices(*instance, &deviceCount, devices);
 
-	VkPhysicalDeviceProperties deviceProperties;
-	for (uint32_t i = 0; i < deviceCount; i++)
-	{
-		*physicalDevice = devices[i];
-		vkGetPhysicalDeviceProperties(*physicalDevice, &deviceProperties);
-		printf("physical device name: \033[36m%s\033[0m\n", deviceProperties.deviceName);
-	}
+//	VkPhysicalDeviceProperties deviceProperties;
+//	for (uint32_t i = 0; i < deviceCount; i++)
+//	{
+//		*physicalDevice = devices[i];
+//		vkGetPhysicalDeviceProperties(*physicalDevice, &deviceProperties);
+//		printf("physical device name: \033[36m%s\033[0m\n", deviceProperties.deviceName);
+//	}
 
 	*physicalDevice = devices[0];
 	free(devices);
 
-	printf("- pick " BLUE "physical device " RESET_COLOR GREEN "success!" RESET_COLOR "\n");
 	return 0;
 }

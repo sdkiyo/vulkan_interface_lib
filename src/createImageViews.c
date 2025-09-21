@@ -1,8 +1,8 @@
 #include "../include/vk.h"
 
-int createImageViews(VkDevice* device, VkFormat* swapchainImageFormat, VkImage* swapchainImages, VkImageView* swapchainImageViews)
+int createImageViews(const VkDevice *const device, const VkFormat *const swapchainImageFormat, const VkImage *const swapchainImages, VkImageView* swapchainImageViews)
 {
-	for (size_t i = 0; i < IMAGE_COUNT; i++) {
+	for (uint32_t i = 0; i < IMAGE_COUNT; i++) {
 		VkImageViewCreateInfo createInfo = {};
 		createInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		createInfo.image = swapchainImages[i];
@@ -24,8 +24,6 @@ int createImageViews(VkDevice* device, VkFormat* swapchainImageFormat, VkImage* 
 			return -1;
 		}
 	}
-
-	printf("- create " BLUE "imageViews " GREEN "success!" RESET_COLOR "\n");
 
 	return 0;
 }

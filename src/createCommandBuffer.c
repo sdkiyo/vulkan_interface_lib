@@ -13,7 +13,6 @@ int createCommandBuffer(const VkDevice *const device, VkCommandPool* commandPool
 		fprintf(stderr, RED "%s(), line %d, 'failed to create commandBuffer'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
-	printf("- create " BLUE "commandBuffer " GREEN "success!" RESET_COLOR "\n");
 
 	return 0;
 }

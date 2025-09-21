@@ -2,30 +2,62 @@
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT type, const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)
 {
-      fprintf(stderr, RED "Validation layer: [%s] " YELLOW "%s" RESET_COLOR "\n\n", callbackData->pMessageIdName, callbackData->pMessage);
-      return VK_FALSE;
+	if (severity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT)
+	{
+		fprintf(stderr, CYAN "Validation layer [info]: [%s] " RESET_COLOR "%s" RESET_COLOR "\n", callbackData->pMessageIdName, callbackData->pMessage);
+	}
+	else if (severity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT)
+	{
+		fprintf(stderr, BLUE "Validation layer [verbose]: [%s] " RESET_COLOR "%s" RESET_COLOR "\n", callbackData->pMessageIdName, callbackData->pMessage);
+	}
+	else if (severity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT)
+	{
+		fprintf(stderr, YELLOW "Validation layer [warning]: [%s] " YELLOW "%s" RESET_COLOR "\n\n", callbackData->pMessageIdName, callbackData->pMessage);
+	}
+	else if (severity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT)
+	{
+		fprintf(stderr, RED "Validation layer [error]: [%s] " YELLOW "%s" RESET_COLOR "\n\n", callbackData->pMessageIdName, callbackData->pMessage);
+	}
+	else
+	{
+		fprintf(stderr, RED "Validation layer [unknown]: [%s] " RESET_COLOR "%s\n", callbackData->pMessageIdName, callbackData->pMessage);
+	}
+
+	return VK_FALSE;
 }
 
-void createDebugUtilsMessenger(const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
+void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* debugCreateInfo)
 {
-	PFN_vkCreateDebugUtilsMessengerEXT pfnCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
+	debugCreateInfo->sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 
-	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
-	debugCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-
-	debugCreateInfo.messageSeverity =
+	debugCreateInfo->messageSeverity =
 	//	VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
 	//	VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 
-	debugCreateInfo.messageType =
+	debugCreateInfo->messageType =
 		VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
-	debugCreateInfo.pfnUserCallback = debugCallback;
 
-	pfnCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger);
+	debugCreateInfo->pfnUserCallback = debugCallback;
+}
+
+int createDebugUtilsMessenger(const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
+{
+	PFN_vkCreateDebugUtilsMessengerEXT pfnCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
+
+	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
+	fillDebugUtilsMessengerCreateInfo(&debugCreateInfo);
+
+	if (pfnCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger) != VK_SUCCESS)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'failed to create debugUtilsMessenger'" RESET_COLOR "\n", __func__, __LINE__);
+		return -1;
+	}
+
+	return 0;
 }
 
 void destroyDebugUtilsMessenger(const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)

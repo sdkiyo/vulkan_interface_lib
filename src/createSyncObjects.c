@@ -1,6 +1,6 @@
 #include "../include/vk.h"
 
-int createSyncObjects(const VkDevice *const device, VkSemaphore* imageAvailableSemaphore, VkSemaphore* renderFinishedSemaphore, VkFence* inFlightFence)
+int createSyncObjects(const VkDevice *const device, VkSemaphore *const imageAvailableSemaphore, VkSemaphore *const renderFinishedSemaphore, VkFence *const inFlightFence)
 {
 	VkSemaphoreCreateInfo semaphoreInfo = {};
 	semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -9,7 +9,7 @@ int createSyncObjects(const VkDevice *const device, VkSemaphore* imageAvailableS
 	fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
 	fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
-	for (int i = 0; i < IMAGE_COUNT; i++)
+	for (uint32_t i = 0; i < IMAGE_COUNT; i++)
 	{
 		if (vkCreateSemaphore(*device, &semaphoreInfo, nullptr, &imageAvailableSemaphore[i]) != VK_SUCCESS)
 		{
@@ -29,8 +29,6 @@ int createSyncObjects(const VkDevice *const device, VkSemaphore* imageAvailableS
 			return -1;
 		}
 	}
-
-	printf("- create " BLUE "syncObjects " GREEN "success!" RESET_COLOR "\n");
 
 	return 0;
 }

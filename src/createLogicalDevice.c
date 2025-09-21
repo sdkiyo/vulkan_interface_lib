@@ -1,6 +1,6 @@
 #include "../include/vk.h"
 
-int createLogicalDevice(const VkPhysicalDevice *const physicalDevice, VkDevice *const device, VkQueue* queue)
+int createLogicalDevice(const char* const* deviceExtensions, uint32_t deviceExtensionsCount, const VkPhysicalDevice *const physicalDevice, VkDevice *const device, VkQueue *const queue)
 {
 	float queuePriority = 1.0f;
 	VkDeviceQueueCreateInfo deviceQueueCreateInfo = {};
@@ -9,13 +9,18 @@ int createLogicalDevice(const VkPhysicalDevice *const physicalDevice, VkDevice *
 	deviceQueueCreateInfo.queueCount = 1;
 	deviceQueueCreateInfo.pQueuePriorities = &queuePriority;
 
-	const char* deviceExtensions[] = {"VK_KHR_swapchain"};
+	//const char *const deviceExtensions[] = {"VK_KHR_swapchain"};
+	printf("device extensions:\n");
+	for (uint32_t i = 0; i < deviceExtensionsCount; i++)
+	{
+		printf("\033[35m   %s\033[0m\n", deviceExtensions[i]);
+	}
 
 	VkDeviceCreateInfo deviceCreateInfo = {};
 	deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	deviceCreateInfo.queueCreateInfoCount = 1;
 	deviceCreateInfo.pQueueCreateInfos = &deviceQueueCreateInfo;
-	deviceCreateInfo.enabledExtensionCount = 1;
+	deviceCreateInfo.enabledExtensionCount = deviceExtensionsCount;
 	deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions;
 
 	if (vkCreateDevice(*physicalDevice, &deviceCreateInfo, nullptr, device) != VK_SUCCESS)
@@ -25,8 +30,6 @@ int createLogicalDevice(const VkPhysicalDevice *const physicalDevice, VkDevice *
 	}
 
 	vkGetDeviceQueue(*device, 0, 0, queue);
-
-	printf("- create " BLUE "device " GREEN "success!" RESET_COLOR "\n");
 
 	return 0;
 }

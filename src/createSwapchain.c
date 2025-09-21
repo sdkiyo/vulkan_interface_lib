@@ -1,6 +1,6 @@
 #include "../include/vk.h"
 
-int createSwapchain(VkPhysicalDevice* physicalDevice, VkSurfaceKHR* surface, VkDevice* device, VkSwapchainKHR *swapchain, VkImage* swapchainImages, VkFormat* swapchainImageFormat, VkExtent2D* swapchainExtent)
+int createSwapchain(const VkPhysicalDevice *const physicalDevice, const VkSurfaceKHR *const surface, const VkDevice *const device, VkSwapchainKHR *swapchain, VkImage* swapchainImages, VkFormat* swapchainImageFormat, VkExtent2D* swapchainExtent)
 {
 	VkSurfaceCapabilitiesKHR surfaceCapabilities = {};
 	vkGetPhysicalDeviceSurfaceCapabilitiesKHR(*physicalDevice, *surface, &surfaceCapabilities);
@@ -28,7 +28,6 @@ int createSwapchain(VkPhysicalDevice* physicalDevice, VkSurfaceKHR* surface, VkD
 		fprintf(stderr, RED "%s(), line %d, 'failed to create swapchain'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
-	printf("- create " BLUE "swapchain " GREEN "success!" RESET_COLOR "\n");
 
 	uint32_t count = 0;
 	vkGetSwapchainImagesKHR(*device, *swapchain, &count, nullptr);

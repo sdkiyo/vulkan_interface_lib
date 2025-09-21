@@ -2,12 +2,12 @@
 
 int drawFrame(lvData *const lv)
 {
-	fprintf(stderr, "hel\n");
+	printf("drawFrame()\n");
+
         vkWaitForFences(lv->device, 1, &lv->inFlightFence[lv->currentFrame], VK_TRUE, UINT64_MAX);
-	fprintf(stderr, "hel2\n");
         vkResetFences(lv->device, 1, &lv->inFlightFence[lv->currentFrame]);
 
-        uint32_t imageIndex;
+        uint32_t imageIndex = 0;
         vkAcquireNextImageKHR(lv->device, lv->swapchain, UINT64_MAX, lv->imageAvailableSemaphore[lv->currentFrame], VK_NULL_HANDLE, &imageIndex);
 
         vkResetCommandBuffer(lv->commandBuffers[lv->currentFrame], 0);
@@ -31,7 +31,8 @@ int drawFrame(lvData *const lv)
 
         if (vkQueueSubmit(lv->queue, 1, &submitInfo, lv->inFlightFence[lv->currentFrame]) != VK_SUCCESS)
 	{
-		printf("df\n");
+		fprintf(stderr, RED "%s(), line %d, 'failed to vkQueueSubmit()'" RESET_COLOR "\n", __func__, __LINE__);
+		return -1;
         }
 
         VkPresentInfoKHR presentInfo = {};
@@ -48,6 +49,8 @@ int drawFrame(lvData *const lv)
 
         vkQueuePresentKHR(lv->queue, &presentInfo);
 
-	lv->currentFrame = (lv->currentFrame == IMAGE_COUNT - 1) ? 0 : lv->currentFrame + 1;
-	printf("drawFrame()\n");
+	//lv->currentFrame = (lv->currentFrame == IMAGE_COUNT - 1) ? 0 : lv->currentFrame + 1;
+	lv->currentFrame = (lv->currentFrame + 1) % IMAGE_COUNT;
+
+	return 0;
 }

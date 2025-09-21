@@ -1,11 +1,11 @@
 #include "../include/vk.h"
 
-int createGraphicsPipeline(const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, VkRenderPass* renderPass)
+int createGraphicsPipeline(const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, const VkRenderPass *const renderPass)
 {
 	uint32_t vert_code_size = 0;
 	uint32_t frag_code_size = 0;
-	char* vertShaderCode = getShaderCode("../../../../ny_realno_tipa/build/shaders/vert.spv", &vert_code_size);
-	char* fragShaderCode = getShaderCode("../../../../ny_realno_tipa/build/shaders/frag.spv", &frag_code_size);
+	char* vertShaderCode = getShaderCode("../shaders/vert.spv", &vert_code_size);
+	char* fragShaderCode = getShaderCode("../shaders/frag.spv", &frag_code_size);
 
         VkShaderModule vertShaderModule = createShaderModule(device, vertShaderCode, vert_code_size);
         VkShaderModule fragShaderModule = createShaderModule(device, fragShaderCode, frag_code_size);
@@ -43,7 +43,7 @@ int createGraphicsPipeline(const VkDevice *const device, VkPipelineLayout* pipel
         rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         rasterizer.depthClampEnable = VK_FALSE;
         rasterizer.rasterizerDiscardEnable = VK_FALSE;
-        rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
+        rasterizer.polygonMode = VK_POLYGON_MODE_FILL;// POINT, LINE, FILL
         rasterizer.lineWidth = 1.0f;
         rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
         rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
@@ -115,6 +115,5 @@ int createGraphicsPipeline(const VkDevice *const device, VkPipelineLayout* pipel
         vkDestroyShaderModule(*device, fragShaderModule, nullptr);
         vkDestroyShaderModule(*device, vertShaderModule, nullptr);
 
-	printf("- create " BLUE "graphicsPipeline " GREEN "success!" RESET_COLOR "\n");
 	return 0;
 }

@@ -1,8 +1,8 @@
 #include "../include/vk.h"
 
-int createFramebuffers(VkDevice* device, VkExtent2D* swapchainExtent, VkRenderPass* renderPass, VkImageView* swapchainImageViews, VkFramebuffer* swapchainFramebuffers)
+int createFramebuffers(const VkDevice *const device, const VkExtent2D *const swapchainExtent, const VkRenderPass *const renderPass, const VkImageView *const swapchainImageViews, VkFramebuffer* swapchainFramebuffers)
 {
-	for (size_t i = 0; i < IMAGE_COUNT; i++) {
+	for (uint32_t i = 0; i < IMAGE_COUNT; i++) {
 		VkImageView attachments[] = { swapchainImageViews[i] };
 
 		VkFramebufferCreateInfo framebufferInfo = {};
@@ -19,7 +19,6 @@ int createFramebuffers(VkDevice* device, VkExtent2D* swapchainExtent, VkRenderPa
 			return -1;
 		}
 	}
-	printf("- create " BLUE "framebuffer " GREEN "success!" RESET_COLOR "\n");
 
 	return 0;
 }

@@ -12,7 +12,6 @@ int createCommandPool(const VkDevice *const device, VkCommandPool* commandPool)
 		fprintf(stderr, RED "%s(), line %d, 'failed to create commandPool'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
-	printf("- create " BLUE "commandPool " GREEN "success!" RESET_COLOR "\n");
 
 	return 0;
 }

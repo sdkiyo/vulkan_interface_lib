@@ -1,13 +1,13 @@
 #include "../include/vk.h"
 
-int recordCommandBuffer(VkCommandBuffer* commandBuffer, uint32_t imageIndex, VkPipeline* graphicsPipeline, VkRenderPass* renderPass, VkExtent2D* swapchainExtent, VkFramebuffer* swapchainFramebuffers)
+int recordCommandBuffer(VkCommandBuffer* commandBuffer, const uint32_t imageIndex, const VkPipeline *const graphicsPipeline, const VkRenderPass *const renderPass, const VkExtent2D *const swapchainExtent, const VkFramebuffer *const swapchainFramebuffers)
 {
         VkCommandBufferBeginInfo beginInfo = {};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
         if (vkBeginCommandBuffer(*commandBuffer, &beginInfo) != VK_SUCCESS)
 	{
-		fprintf(stderr, RED "%s(), line %d, 'failed to create instance'" RESET_COLOR "\n", __func__, __LINE__);
+		fprintf(stderr, RED "%s(), line %d, 'failed to vkBeginCommandBuffer()'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
 
@@ -18,7 +18,7 @@ int recordCommandBuffer(VkCommandBuffer* commandBuffer, uint32_t imageIndex, VkP
         renderPassInfo.renderArea.offset = (VkOffset2D){0, 0};
         renderPassInfo.renderArea.extent = *swapchainExtent;
 
-        VkClearValue clearColor = {{{0.0f, 0.0f, 0.0f, 1.0f}}};
+        VkClearValue clearColor = {{{0.01f, 0.01f, 0.01f, 1.0f}}};
         renderPassInfo.clearValueCount = 1;
         renderPassInfo.pClearValues = &clearColor;
 
@@ -46,8 +46,9 @@ int recordCommandBuffer(VkCommandBuffer* commandBuffer, uint32_t imageIndex, VkP
 
         if (vkEndCommandBuffer(*commandBuffer) != VK_SUCCESS)
 	{
-		fprintf(stderr, RED "%s(), line %d, 'failed to create instance'" RESET_COLOR "\n", __func__, __LINE__);
+		fprintf(stderr, RED "%s(), line %d, 'failed to vkEndCommandBuffer()'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
         }
+
 	return 0;
 }
