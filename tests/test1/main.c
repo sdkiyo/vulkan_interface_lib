@@ -51,7 +51,10 @@ int main()
 			break;
 		}
 	}
-	vkDeviceWaitIdle(lvdata.device);
+	void *vklib = dlopen("/usr/lib64/libvulkan.so", RTLD_LAZY);
+	PFN_vkDeviceWaitIdle pfn_idle = (PFN_vkDeviceWaitIdle)param.lvdata->pfn_vkGetInstanceProcAddr(param.lvdata->instance, "vkDeviceWaitIdle");
+	//vkDeviceWaitIdle(lvdata.device);
+	pfn_idle(lvdata.device);
 
 	glfwDestroyWindow(window);
 	lvTerminate(&lvdata);

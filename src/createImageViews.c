@@ -1,6 +1,6 @@
 #include "../include/vk.h"
 
-int createImageViews(const VkDevice *const device, const VkFormat *const swapchainImageFormat, const VkImage *const swapchainImages, VkImageView* swapchainImageViews)
+int createImageViews(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, const VkFormat *const swapchainImageFormat, const VkImage *const swapchainImages, VkImageView* swapchainImageViews)
 {
 	for (uint32_t i = 0; i < IMAGE_COUNT; i++) {
 		VkImageViewCreateInfo createInfo = {};
@@ -18,7 +18,9 @@ int createImageViews(const VkDevice *const device, const VkFormat *const swapcha
 		createInfo.subresourceRange.baseArrayLayer = 0;
 		createInfo.subresourceRange.layerCount = 1;
 
-		if (vkCreateImageView(*device, &createInfo, nullptr, &swapchainImageViews[i]) != VK_SUCCESS)
+		PFN_vkCreateImageView pfn_vkCreateImageView = (PFN_vkCreateImageView)pfn_vkGetDeviceProcAddr(*device, "vkCreateImageView");
+
+		if (pfn_vkCreateImageView(*device, &createInfo, nullptr, &swapchainImageViews[i]) != VK_SUCCESS)
 		{
 			fprintf(stderr, RED "%s(), line %d, 'failed to create imageViews'" RESET_COLOR "\n", __func__, __LINE__);
 			return -1;

@@ -6,7 +6,7 @@ project( test2
 set(CMAKE_C_STANDARD 23)
 
 #----------TEMPORARY----------#
-find_package(Vulkan REQUIRED)
+#find_package(Vulkan REQUIRED)
 find_package(glfw3 3.4 REQUIRED)
 #----------TEMPORARY-------------#
 
@@ -14,6 +14,7 @@ set(P ../../src/)
 add_library( lava SHARED
 	${P}createInstance.c		${P}lvRun.c
 	${P}debugUtilsMessenger.c
+	${P}vkGetFuncAddr.c
 	${P}getShaderCode.c		${P}createShaderModule.c
 	${P}createSurface.c		${P}pickPhysicalDevice.c
 	${P}createLogicalDevice.c	${P}createSwapchain.c
@@ -23,7 +24,7 @@ add_library( lava SHARED
 	${P}createSyncObjects.c		${P}recordCommandBuffer.c
 	${P}drawFrame.c			${P}lvTerminate.c
 )
-target_link_libraries(lava PUBLIC Vulkan::Vulkan)
+#target_link_libraries(lava PUBLIC Vulkan::Vulkan)
 target_link_libraries(lava PUBLIC glfw)
 
 add_executable(${PROJECT_NAME} main.c)

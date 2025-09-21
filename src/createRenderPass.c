@@ -1,6 +1,6 @@
 #include "../include/vk.h"
 
-int createRenderPass(const VkDevice *const device, const VkFormat *const swapchainImageFormat, VkRenderPass* renderPass)
+int createRenderPass(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, const VkFormat *const swapchainImageFormat, VkRenderPass* renderPass)
 {
 	VkAttachmentDescription colorAttachment = {};
 	colorAttachment.format = *swapchainImageFormat;
@@ -38,7 +38,9 @@ int createRenderPass(const VkDevice *const device, const VkFormat *const swapcha
 	renderPassInfo.dependencyCount = 1;
 	renderPassInfo.pDependencies = &dependency;
 
-	if (vkCreateRenderPass(*device, &renderPassInfo, nullptr, renderPass) != VK_SUCCESS)
+	PFN_vkCreateRenderPass pfn_vkCreateRenderPass = (PFN_vkCreateRenderPass)pfn_vkGetDeviceProcAddr(*device, "vkCreateRenderPass");
+
+	if (pfn_vkCreateRenderPass(*device, &renderPassInfo, nullptr, renderPass) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create renderPass'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;

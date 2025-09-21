@@ -44,9 +44,9 @@ void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* debug
 	debugCreateInfo->pfnUserCallback = debugCallback;
 }
 
-int createDebugUtilsMessenger(const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
+int createDebugUtilsMessenger(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
 {
-	PFN_vkCreateDebugUtilsMessengerEXT pfnCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
+	PFN_vkCreateDebugUtilsMessengerEXT pfnCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)pfn_vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
 
 	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
 	fillDebugUtilsMessengerCreateInfo(&debugCreateInfo);
@@ -58,11 +58,4 @@ int createDebugUtilsMessenger(const VkInstance *const instance, VkDebugUtilsMess
 	}
 
 	return 0;
-}
-
-void destroyDebugUtilsMessenger(const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
-{
-	PFN_vkDestroyDebugUtilsMessengerEXT pfnDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT)vkGetInstanceProcAddr(*instance, "vkDestroyDebugUtilsMessengerEXT");
-
-   	pfnDestroyDebugUtilsMessengerEXT(*instance, *debugMessenger, nullptr);
 }

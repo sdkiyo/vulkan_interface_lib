@@ -1,9 +1,12 @@
 #include "../include/vk.h"
 
-int lvPickPhysicalDevice(const VkInstance *const instance, VkPhysicalDevice *const physicalDevice)
+int lvPickPhysicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkPhysicalDevice *const physicalDevice)
 {
 	uint32_t deviceCount = 0;
-	vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr);
+
+	PFN_vkEnumeratePhysicalDevices pfn_vkEnumeratePhysicalDevices = (PFN_vkEnumeratePhysicalDevices)pfn_vkGetInstanceProcAddr(*instance, "vkEnumeratePhysicalDevices");
+
+	pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr);
 
 	if (deviceCount == 0)
 	{
@@ -12,7 +15,7 @@ int lvPickPhysicalDevice(const VkInstance *const instance, VkPhysicalDevice *con
 	}
 
 	VkPhysicalDevice *devices = malloc(deviceCount * sizeof(VkPhysicalDevice));
-	vkEnumeratePhysicalDevices(*instance, &deviceCount, devices);
+	pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, devices);
 
 //	VkPhysicalDeviceProperties deviceProperties;
 //	for (uint32_t i = 0; i < deviceCount; i++)

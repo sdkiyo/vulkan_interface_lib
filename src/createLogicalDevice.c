@@ -1,6 +1,6 @@
 #include "../include/vk.h"
 
-int createLogicalDevice(const char* const* deviceExtensions, uint32_t deviceExtensionsCount, const VkPhysicalDevice *const physicalDevice, VkDevice *const device, VkQueue *const queue)
+int createLogicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkInstance *const instance, const char* const* deviceExtensions, uint32_t deviceExtensionsCount, const VkPhysicalDevice *const physicalDevice, VkDevice *const device, VkQueue *const queue)
 {
 	float queuePriority = 1.0f;
 	VkDeviceQueueCreateInfo deviceQueueCreateInfo = {};
@@ -23,13 +23,17 @@ int createLogicalDevice(const char* const* deviceExtensions, uint32_t deviceExte
 	deviceCreateInfo.enabledExtensionCount = deviceExtensionsCount;
 	deviceCreateInfo.ppEnabledExtensionNames = deviceExtensions;
 
-	if (vkCreateDevice(*physicalDevice, &deviceCreateInfo, nullptr, device) != VK_SUCCESS)
+	PFN_vkCreateDevice pfn_vkCreateDevice = (PFN_vkCreateDevice)pfn_vkGetInstanceProcAddr(*instance, "vkCreateDevice");
+
+	if (pfn_vkCreateDevice(*physicalDevice, &deviceCreateInfo, nullptr, device) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create logical device'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
 
-	vkGetDeviceQueue(*device, 0, 0, queue);
+	PFN_vkGetDeviceQueue pfn_vkGetDeviceQueue = (PFN_vkGetDeviceQueue)pfn_vkGetDeviceProcAddr(*device, "vkGetDeviceQueue");
+
+	pfn_vkGetDeviceQueue(*device, 0, 0, queue);
 
 	return 0;
 }

@@ -1,7 +1,7 @@
 #include "../include/vk.h"
 
 
-int lvCreateInstance(const char* const* validationLayers, const uint32_t validationLayersCount, const char* const* extensions, const uint32_t extensionsCount, VkInstance *const instance)
+int lvCreateInstance(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const char* const* validationLayers, const uint32_t validationLayersCount, const char* const* extensions, const uint32_t extensionsCount, VkInstance *const instance)
 {
 	VkApplicationInfo appInfo = {};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -44,10 +44,8 @@ int lvCreateInstance(const char* const* validationLayers, const uint32_t validat
 	createInfo.enabledExtensionCount = extensionsCount;
 	createInfo.ppEnabledExtensionNames = extensions;
 
-	//PFN_vkVoidFunction pfnCreateInstance = vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
-	void *vklib = dlopen("/usr/lib64/libvulkan.so", RTLD_LAZY);
-	typedef VkResult (*PFN_vkCreateInstance)(const VkInstanceCreateInfo* pCreateInfo, const VkAllocationCallbacks* pAllocator, VkInstance* pInstance);
-	PFN_vkCreateInstance pfn_vkCreateInstance = dlsym(vklib, "vkCreateInstance");
+	PFN_vkCreateInstance pfn_vkCreateInstance = (PFN_vkCreateInstance)pfn_vkGetInstanceProcAddr(NULL, "vkCreateInstance");
+
 	if (pfn_vkCreateInstance(&createInfo, nullptr, instance) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create instance'" RESET_COLOR "\n", __func__, __LINE__);
