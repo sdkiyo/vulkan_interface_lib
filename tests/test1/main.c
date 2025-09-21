@@ -23,11 +23,14 @@ int main()
 		"VK_LAYER_KHRONOS_validation"
 	};
 
+	//uint32_t extensionCount = 3;
+	//const char *const *const extensions = glfwGetRequiredInstanceExtensions( &extensionCount );
 	const char *const instanceExtensions[] = {
 		"VK_KHR_surface",
 		"VK_KHR_wayland_surface",
 		"VK_EXT_debug_utils"
 	};
+	//const char *const deviceExtensions[] = {"VK_KHR_swapchain"};
 	const char *const deviceExtensions[] = {"VK_KHR_swapchain"};
 	lvParam param = {};
 	param.lvdata = &lvdata;

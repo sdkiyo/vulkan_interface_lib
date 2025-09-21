@@ -14,7 +14,6 @@ set(P ../../src/)
 add_library( lava SHARED
 	${P}createInstance.c		${P}lvRun.c
 	${P}debugUtilsMessenger.c
-	${P}vkGetFuncAddr.c
 	${P}getShaderCode.c		${P}createShaderModule.c
 	${P}createSurface.c		${P}pickPhysicalDevice.c
 	${P}createLogicalDevice.c	${P}createSwapchain.c

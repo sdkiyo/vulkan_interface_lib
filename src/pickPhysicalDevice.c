@@ -7,14 +7,13 @@ int lvPickPhysicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, co
 	PFN_vkEnumeratePhysicalDevices pfn_vkEnumeratePhysicalDevices = (PFN_vkEnumeratePhysicalDevices)pfn_vkGetInstanceProcAddr(*instance, "vkEnumeratePhysicalDevices");
 
 	pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr);
-
 	if (deviceCount == 0)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'unable to find GPUs with vulkan support'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
 
-	VkPhysicalDevice *devices = malloc(deviceCount * sizeof(VkPhysicalDevice));
+	VkPhysicalDevice *devices = malloc(deviceCount * sizeof(VkPhysicalDevice));// ??
 	pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, devices);
 
 //	VkPhysicalDeviceProperties deviceProperties;

@@ -58,8 +58,8 @@ int lvTerminate(lvData *const lvdata)
 	pfn_vkDestroySurfaceKHR(lvdata->instance, lvdata->surface, nullptr);
 	printf(YELLOW "- vkDestroySurfaceKHR()" RESET_COLOR "\n");
 
-	PFN_vkDestroyDebugUtilsMessengerEXT pfn_DestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT)lvdata->pfn_vkGetInstanceProcAddr(lvdata->instance, "vkDestroyDebugUtilsMessengerEXT");
-   	pfn_DestroyDebugUtilsMessengerEXT(lvdata->instance, lvdata->debugMessenger, nullptr);
+	PFN_vkDestroyDebugUtilsMessengerEXT pfn_vkDestroyDebugUtilsMessengerEXT = (PFN_vkDestroyDebugUtilsMessengerEXT)lvdata->pfn_vkGetInstanceProcAddr(lvdata->instance, "vkDestroyDebugUtilsMessengerEXT");
+   	pfn_vkDestroyDebugUtilsMessengerEXT(lvdata->instance, lvdata->debugMessenger, nullptr);
 	printf(YELLOW "- destroyDebugUtilsMessenger()" RESET_COLOR "\n");
 
 	PFN_vkDestroyInstance pfn_vkDestroyInstance = (PFN_vkDestroyInstance)lvdata->pfn_vkGetInstanceProcAddr(lvdata->instance, "vkDestroyInstance");

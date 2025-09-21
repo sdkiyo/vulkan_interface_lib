@@ -8,7 +8,7 @@ int createSwapchain(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkG
 
 	pfn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR(*physicalDevice, *surface, &surfaceCapabilities);
 
-	VkExtent2D extent = {720, 480};
+	VkExtent2D extent = {720, 480};// ??
 
 	VkSwapchainCreateInfoKHR swapchainCreateInfo = {};
 	swapchainCreateInfo.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR;
@@ -22,7 +22,7 @@ int createSwapchain(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkG
 	swapchainCreateInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	swapchainCreateInfo.preTransform = surfaceCapabilities.currentTransform;
 	swapchainCreateInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-	swapchainCreateInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;
+	swapchainCreateInfo.presentMode = VK_PRESENT_MODE_FIFO_KHR;// ??
 	swapchainCreateInfo.clipped = VK_TRUE;
 	swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
 
@@ -42,8 +42,8 @@ int createSwapchain(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkG
 
 	pfn_vkGetSwapchainImagesKHR(*device, *swapchain, &count, swapchainImages);
 
-	*swapchainImageFormat = swapchainCreateInfo.imageFormat;
-	*swapchainExtent = swapchainCreateInfo.imageExtent;
+	*swapchainImageFormat = swapchainCreateInfo.imageFormat;// ??
+	*swapchainExtent = swapchainCreateInfo.imageExtent;// ??
 
 	return 0;
 }

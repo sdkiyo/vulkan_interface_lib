@@ -10,8 +10,8 @@ int createFramebuffers(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const Vk
 		framebufferInfo.renderPass = *renderPass;
 		framebufferInfo.attachmentCount = (uint32_t) (sizeof(attachments) / sizeof(*attachments));
 		framebufferInfo.pAttachments = attachments;
-		framebufferInfo.width = swapchainExtent->width;
-		framebufferInfo.height = swapchainExtent->height;
+		framebufferInfo.width = swapchainExtent->width;// ??
+		framebufferInfo.height = swapchainExtent->height;// ??
 		framebufferInfo.layers = 1;
 
 		PFN_vkCreateFramebuffer pfn_vkCreateFramebuffer = (PFN_vkCreateFramebuffer)pfn_vkGetDeviceProcAddr(*device, "vkCreateFramebuffer");

@@ -46,12 +46,12 @@ void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* debug
 
 int createDebugUtilsMessenger(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
 {
-	PFN_vkCreateDebugUtilsMessengerEXT pfnCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)pfn_vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
+	PFN_vkCreateDebugUtilsMessengerEXT pfn_vkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)pfn_vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
 
 	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
 	fillDebugUtilsMessengerCreateInfo(&debugCreateInfo);
 
-	if (pfnCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger) != VK_SUCCESS)
+	if (pfn_vkCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create debugUtilsMessenger'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
