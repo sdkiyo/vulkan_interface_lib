@@ -1,4 +1,4 @@
-#include "vk.h"
+#include "vertex.h"
 
 
 void getBindingDescription(VkVertexInputBindingDescription *const bindingDescription)

@@ -4,6 +4,7 @@
 int main()
 {
 	printf(GRAY ITALIC "test1 start." RESET_COLOR "\n");
+
 	glfwInit();
 
 	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -17,7 +18,6 @@ int main()
 		exit(-1);
 	}
 
-	lvData lvdata = {};
 	const char *const layers[] = {
 	//	"VK_LAYER_KHRONOS_validation",
 		"VK_LAYER_KHRONOS_validation"
@@ -30,10 +30,9 @@ int main()
 		"VK_KHR_wayland_surface",
 		"VK_EXT_debug_utils"
 	};
-	//const char *const deviceExtensions[] = {"VK_KHR_swapchain"};
 	const char *const deviceExtensions[] = {"VK_KHR_swapchain"};
 	lvParam param = {};
-	param.lvdata = &lvdata;
+	param.window = window;
 	param.validationLayersCount = 1;
 	param.validationLayers = layers;
 	param.instanceExtensionsCount = 3;
@@ -41,27 +40,38 @@ int main()
 	param.deviceExtensionsCount = 1;
 	param.deviceExtensions = deviceExtensions;
 	param.imageCount = 4;
-	lvInitVulkan(&param, window);
+
+	void *vklib = dlopen("./liblava.so", RTLD_LAZY);
+	const PFN_lvInitVulkan pfn_lvInitVulkan = dlsym(vklib, "lvInitVulkan");
+	const PFN_drawFrame pfn_drawFrame = dlsym(vklib, "drawFrame");
+	const PFN_lvTerminate pfn_lvTerminate = dlsym(vklib, "lvTerminate");
+
+	lvData lvdata = {};
+	LoaderTable loaderTable = {};
+	pfn_lvInitVulkan(&param, &lvdata, &loaderTable);
 
 	char ch;
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
-		drawFrame(&lvdata);
+		pfn_drawFrame(&lvdata, &loaderTable);
 		ch = getchar();
 		if (ch == 'q')
 		{
 			break;
 		}
 	}
-	void *vklib = dlopen("/usr/lib64/libvulkan.so", RTLD_LAZY);
-	PFN_vkDeviceWaitIdle pfn_idle = (PFN_vkDeviceWaitIdle)param.lvdata->pfn_vkGetInstanceProcAddr(param.lvdata->instance, "vkDeviceWaitIdle");
-	//vkDeviceWaitIdle(lvdata.device);
-	pfn_idle(lvdata.device);
+	PFN_vkDeviceWaitIdle pfn_vkDeviceWaitIdle = (PFN_vkDeviceWaitIdle) loaderTable.pfn_vkGetInstanceProcAddr(lvdata.instance, "vkDeviceWaitIdle");
+	pfn_vkDeviceWaitIdle(lvdata.device);
+
 
 	glfwDestroyWindow(window);
-	lvTerminate(&lvdata);
+
+	pfn_lvTerminate(&lvdata, &loaderTable);
+	dlclose(vklib);
+
 	glfwTerminate();
+
 	printf(GRAY ITALIC "test1 end." RESET_COLOR "\n");
 	return 0;
 }

@@ -1,4 +1,4 @@
-#include "vk.h"
+#include "pre.h"
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT type, const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)
 {
@@ -44,14 +44,12 @@ void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* debug
 	debugCreateInfo->pfnUserCallback = debugCallback;
 }
 
-int createDebugUtilsMessenger(const PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
+int createDebugUtilsMessenger(const LoaderTable *const pTable, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
 {
-	const PFN_vkCreateDebugUtilsMessengerEXT pfn_vkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT) pfn_vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
-
 	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
 	fillDebugUtilsMessengerCreateInfo(&debugCreateInfo);
 
-	if (pfn_vkCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger) != VK_SUCCESS)
+	if (pTable->pfn_vkCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create debugUtilsMessenger'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;

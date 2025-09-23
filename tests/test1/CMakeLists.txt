@@ -24,12 +24,12 @@ add_library( lava SHARED
 	${P}vertex/getDescription.c		${P}vertex/createVertexBuffer.c
 	${P}vertex/createIndexBuffer.c		${P}vertex/createBuffer.c
 	${P}vertex/copyBuffer.c
-	${P}lvTerminate.c
+	${P}lvTerminate.c			${P}funcLoader.c
 	${P}shaders/getShaderCode.c		${P}shaders/createShaderModule.c
 )
 target_include_directories(lava PUBLIC ../../libs/gph-cmath/src/)
 target_include_directories(lava PUBLIC ../../include/)
-target_link_libraries(lava PUBLIC glfw)
 
 add_executable(${PROJECT_NAME} main.c)
-target_link_libraries(${PROJECT_NAME} PRIVATE lava)
+target_include_directories(${PROJECT_NAME} PRIVATE ../../libs/gph-cmath/src/)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw)
