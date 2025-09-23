@@ -1,6 +1,6 @@
-#include "../include/vk.h"
+#include "vk.h"
 
-int createGraphicsPipeline(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, const VkRenderPass *const renderPass)
+int createGraphicsPipeline(const PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, const VkRenderPass *const renderPass)
 {
 	uint32_t vert_code_size = 0;
 	uint32_t frag_code_size = 0;
@@ -26,8 +26,17 @@ int createGraphicsPipeline(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, cons
 
         VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
         vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-        vertexInputInfo.vertexBindingDescriptionCount = 0;
-        vertexInputInfo.vertexAttributeDescriptionCount = 0;
+
+	VkVertexInputBindingDescription bindingDescription = {};
+	getBindingDescription(&bindingDescription);
+
+	VkVertexInputAttributeDescription attributeDescriptions[2] = {};
+	getAttributeDescriptions(attributeDescriptions);
+
+	vertexInputInfo.vertexBindingDescriptionCount = 1;
+	vertexInputInfo.vertexAttributeDescriptionCount = 2;
+	vertexInputInfo.pVertexBindingDescriptions = &bindingDescription;
+	vertexInputInfo.pVertexAttributeDescriptions = attributeDescriptions;
 
         VkPipelineInputAssemblyStateCreateInfo inputAssembly = {};
         inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
@@ -84,7 +93,7 @@ int createGraphicsPipeline(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, cons
         pipelineLayoutInfo.setLayoutCount = 0;
         pipelineLayoutInfo.pushConstantRangeCount = 0;
 
-	PFN_vkCreatePipelineLayout pfn_vkCreatePipelineLayout = (PFN_vkCreatePipelineLayout)pfn_vkGetDeviceProcAddr(*device, "vkCreatePipelineLayout");
+	const PFN_vkCreatePipelineLayout pfn_vkCreatePipelineLayout = (PFN_vkCreatePipelineLayout) pfn_vkGetDeviceProcAddr(*device, "vkCreatePipelineLayout");
 
         if (pfn_vkCreatePipelineLayout(*device, &pipelineLayoutInfo, nullptr, pipelineLayout) != VK_SUCCESS)
 	{
@@ -108,7 +117,7 @@ int createGraphicsPipeline(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, cons
         pipelineInfo.subpass = 0;
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-	PFN_vkCreateGraphicsPipelines pfn_vkCreateGraphicsPipelines = (PFN_vkCreateGraphicsPipelines)pfn_vkGetDeviceProcAddr(*device, "vkCreateGraphicsPipelines");
+	const PFN_vkCreateGraphicsPipelines pfn_vkCreateGraphicsPipelines = (PFN_vkCreateGraphicsPipelines) pfn_vkGetDeviceProcAddr(*device, "vkCreateGraphicsPipelines");
 
         if (pfn_vkCreateGraphicsPipelines(*device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, graphicsPipeline) != VK_SUCCESS)
 	{
@@ -116,7 +125,7 @@ int createGraphicsPipeline(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, cons
 		return -1;
         }
 
-	PFN_vkDestroyShaderModule pfn_vkDestroyShaderModule = (PFN_vkDestroyShaderModule)pfn_vkGetDeviceProcAddr(*device, "vkDestroyShaderModule");
+	const PFN_vkDestroyShaderModule pfn_vkDestroyShaderModule = (PFN_vkDestroyShaderModule) pfn_vkGetDeviceProcAddr(*device, "vkDestroyShaderModule");
 
 	pfn_vkDestroyShaderModule(*device, fragShaderModule, nullptr);
 	pfn_vkDestroyShaderModule(*device, vertShaderModule, nullptr);

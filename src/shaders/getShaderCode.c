@@ -1,4 +1,4 @@
-#include "../include/vk.h"
+#include "vk.h"
 
 char* getShaderCode(const char *const file_name, uint32_t *const pShaderSize)
 {

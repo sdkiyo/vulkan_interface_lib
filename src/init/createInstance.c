@@ -1,7 +1,7 @@
-#include "../include/vk.h"
+#include "vk.h"
 
 
-int lvCreateInstance(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const char* const* validationLayers, const uint32_t validationLayersCount, const char* const* extensions, const uint32_t extensionsCount, VkInstance *const instance)
+int lvCreateInstance(const PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const char* const* validationLayers, const uint32_t validationLayersCount, const char* const* extensions, const uint32_t extensionsCount, VkInstance *const instance)
 {
 	VkApplicationInfo appInfo = {};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -19,7 +19,7 @@ int lvCreateInstance(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const 
 	createInfo.enabledExtensionCount = extensionsCount;
 	createInfo.ppEnabledExtensionNames = extensions;
 
-	PFN_vkCreateInstance pfn_vkCreateInstance = (PFN_vkCreateInstance)pfn_vkGetInstanceProcAddr(NULL, "vkCreateInstance");
+	const PFN_vkCreateInstance pfn_vkCreateInstance = (PFN_vkCreateInstance) pfn_vkGetInstanceProcAddr(NULL, "vkCreateInstance");
 
 	if (pfn_vkCreateInstance(&createInfo, nullptr, instance) != VK_SUCCESS)
 	{

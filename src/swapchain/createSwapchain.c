@@ -1,10 +1,10 @@
-#include "../include/vk.h"
+#include "vk.h"
 
-int createSwapchain(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkInstance *const instance, const VkPhysicalDevice *const physicalDevice, const VkSurfaceKHR *const surface, const VkDevice *const device, VkSwapchainKHR *swapchain, VkImage* swapchainImages, VkFormat* swapchainImageFormat, VkExtent2D* swapchainExtent)
+int createSwapchain(const PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkInstance *const instance, const VkPhysicalDevice *const physicalDevice, const VkSurfaceKHR *const surface, const VkDevice *const device, VkSwapchainKHR *swapchain, VkImage* swapchainImages, VkFormat* swapchainImageFormat, VkExtent2D* swapchainExtent)
 {
 	VkSurfaceCapabilitiesKHR surfaceCapabilities = {};
 
-	PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR pfn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR = (PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR)pfn_vkGetInstanceProcAddr(*instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR");
+	const PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR pfn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR = (PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR) pfn_vkGetInstanceProcAddr(*instance, "vkGetPhysicalDeviceSurfaceCapabilitiesKHR");
 
 	pfn_vkGetPhysicalDeviceSurfaceCapabilitiesKHR(*physicalDevice, *surface, &surfaceCapabilities);
 
@@ -26,7 +26,7 @@ int createSwapchain(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkG
 	swapchainCreateInfo.clipped = VK_TRUE;
 	swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
 
-	PFN_vkCreateSwapchainKHR pfn_vkCreateSwapchainKHR = (PFN_vkCreateSwapchainKHR)pfn_vkGetDeviceProcAddr(*device, "vkCreateSwapchainKHR");
+	const PFN_vkCreateSwapchainKHR pfn_vkCreateSwapchainKHR = (PFN_vkCreateSwapchainKHR) pfn_vkGetDeviceProcAddr(*device, "vkCreateSwapchainKHR");
 
 	if (pfn_vkCreateSwapchainKHR(*device, &swapchainCreateInfo, nullptr, swapchain) != VK_SUCCESS)
 	{
@@ -36,7 +36,7 @@ int createSwapchain(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkG
 
 	uint32_t count = 0;
 
-	PFN_vkGetSwapchainImagesKHR pfn_vkGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR)pfn_vkGetDeviceProcAddr(*device, "vkGetSwapchainImagesKHR");
+	const PFN_vkGetSwapchainImagesKHR pfn_vkGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR) pfn_vkGetDeviceProcAddr(*device, "vkGetSwapchainImagesKHR");
 
 	pfn_vkGetSwapchainImagesKHR(*device, *swapchain, &count, nullptr);
 

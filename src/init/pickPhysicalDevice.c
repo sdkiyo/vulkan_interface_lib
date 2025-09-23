@@ -1,10 +1,10 @@
-#include "../include/vk.h"
+#include "vk.h"
 
-int lvPickPhysicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkPhysicalDevice *const physicalDevice)
+int lvPickPhysicalDevice(const PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkPhysicalDevice *const physicalDevice)
 {
 	uint32_t deviceCount = 0;
 
-	PFN_vkEnumeratePhysicalDevices pfn_vkEnumeratePhysicalDevices = (PFN_vkEnumeratePhysicalDevices)pfn_vkGetInstanceProcAddr(*instance, "vkEnumeratePhysicalDevices");
+	const PFN_vkEnumeratePhysicalDevices pfn_vkEnumeratePhysicalDevices = (PFN_vkEnumeratePhysicalDevices) pfn_vkGetInstanceProcAddr(*instance, "vkEnumeratePhysicalDevices");
 
 	pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr);
 	if (deviceCount == 0)

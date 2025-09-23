@@ -1,6 +1,6 @@
-#include "../include/vk.h"
+#include "vk.h"
 
-VkShaderModule createShaderModule(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, const char *const shader_code, const uint32_t shader_code_size)
+VkShaderModule createShaderModule(const PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, const char *const shader_code, const uint32_t shader_code_size)
 {
 	VkShaderModuleCreateInfo shaderModuleCreateInfo = {};
 	shaderModuleCreateInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
@@ -9,7 +9,7 @@ VkShaderModule createShaderModule(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAdd
 
 	VkShaderModule shaderModule;
 
-	PFN_vkCreateShaderModule pfn_vkCreateShaderModule = (PFN_vkCreateShaderModule)pfn_vkGetDeviceProcAddr(*device, "vkCreateShaderModule");
+	const PFN_vkCreateShaderModule pfn_vkCreateShaderModule = (PFN_vkCreateShaderModule) pfn_vkGetDeviceProcAddr(*device, "vkCreateShaderModule");
 
 	if (pfn_vkCreateShaderModule(*device, &shaderModuleCreateInfo, nullptr, &shaderModule) != VK_SUCCESS)
 	{

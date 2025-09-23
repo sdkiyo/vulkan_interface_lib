@@ -1,6 +1,6 @@
-#include "../include/vk.h"
+#include "vk.h"
 
-int createLogicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkInstance *const instance, const char* const* deviceExtensions, uint32_t deviceExtensionsCount, const VkPhysicalDevice *const physicalDevice, VkDevice *const device, VkQueue *const queue)
+int createLogicalDevice(const PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkInstance *const instance, const char* const* deviceExtensions, uint32_t deviceExtensionsCount, const VkPhysicalDevice *const physicalDevice, VkDevice *const device, VkQueue *const queue)
 {
 	float queuePriority = 1.0f;// ??
 	VkDeviceQueueCreateInfo queueCreateInfo = {};
@@ -16,7 +16,7 @@ int createLogicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN
 	createInfo.enabledExtensionCount = deviceExtensionsCount;
 	createInfo.ppEnabledExtensionNames = deviceExtensions;
 
-	PFN_vkCreateDevice pfn_vkCreateDevice = (PFN_vkCreateDevice)pfn_vkGetInstanceProcAddr(*instance, "vkCreateDevice");
+	const PFN_vkCreateDevice pfn_vkCreateDevice = (PFN_vkCreateDevice) pfn_vkGetInstanceProcAddr(*instance, "vkCreateDevice");
 
 	if (pfn_vkCreateDevice(*physicalDevice, &createInfo, nullptr, device) != VK_SUCCESS)
 	{
@@ -24,7 +24,7 @@ int createLogicalDevice(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, PFN
 		return -1;
 	}
 
-	PFN_vkGetDeviceQueue pfn_vkGetDeviceQueue = (PFN_vkGetDeviceQueue)pfn_vkGetDeviceProcAddr(*device, "vkGetDeviceQueue");
+	const PFN_vkGetDeviceQueue pfn_vkGetDeviceQueue = (PFN_vkGetDeviceQueue) pfn_vkGetDeviceProcAddr(*device, "vkGetDeviceQueue");
 
 	pfn_vkGetDeviceQueue(*device, 0, 0, queue);// ??
 

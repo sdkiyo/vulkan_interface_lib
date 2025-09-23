@@ -1,8 +1,13 @@
-#include "../include/vk.h"
+#include "vk.h"
 
 int lvInitVulkan(lvParam *const lvparam, GLFWwindow *const window)
 {
 	printf(BLUE "initVulkan() " RESET_COLOR GRAY "start" RESET_COLOR "\n");
+	for (int i = 0; i < VERTICES_SIZE; i++)
+	{
+		printf("pos[%d] x: %f\n", i, vertices[i].pos.x);
+		printf("pos[%d] y: %f\n", i, vertices[i].pos.y);
+	}
 
 	printf("=-------starting_params-------=" RESET_COLOR "\n");
 	printf(" layers:\n");
@@ -92,6 +97,18 @@ int lvInitVulkan(lvParam *const lvparam, GLFWwindow *const window)
 		fprintf(stderr, RED "%s(), line %d, 'createCommandPool() failed'" RESET_COLOR "\n", __func__, __LINE__);
 	}
 	printf("- " BLUE "createCommandPool() " GREEN "success!" RESET_COLOR "\n");
+
+	if (createVertexBuffer(lvparam->lvdata->pfn_vkGetInstanceProcAddr, lvparam->lvdata->pfn_vkGetDeviceProcAddr, &lvparam->lvdata->instance, &lvparam->lvdata->physicalDevice, &lvparam->lvdata->device, &lvparam->lvdata->commandPool, &lvparam->lvdata->queue, &lvparam->lvdata->vertexBuffer, &lvparam->lvdata->vertexBufferMemory) == -1)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'createVertexBuffer() failed'" RESET_COLOR "\n", __func__, __LINE__);
+	}
+	printf("- " BLUE "createVertexBuffer() " GREEN "success!" RESET_COLOR "\n");
+
+	if (createIndexBuffer(lvparam->lvdata->pfn_vkGetInstanceProcAddr, lvparam->lvdata->pfn_vkGetDeviceProcAddr, &lvparam->lvdata->instance, &lvparam->lvdata->physicalDevice, &lvparam->lvdata->device, &lvparam->lvdata->commandPool, &lvparam->lvdata->queue, &lvparam->lvdata->indexBuffer, &lvparam->lvdata->indexBufferMemory) == -1)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'createIndexBuffer() failed'" RESET_COLOR "\n", __func__, __LINE__);
+	}
+	printf("- " BLUE "createIndexBuffer() " GREEN "success!" RESET_COLOR "\n");
 
 	if (createCommandBuffer(lvparam->lvdata->pfn_vkGetDeviceProcAddr, &lvparam->lvdata->device, &lvparam->lvdata->commandPool, lvparam->lvdata->commandBuffers) == -1)
 	{

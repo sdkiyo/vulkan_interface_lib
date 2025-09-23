@@ -1,6 +1,6 @@
-#include "../include/vk.h"
+#include "vk.h"
 
-int createSyncObjects(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, VkSemaphore *const imageAvailableSemaphore, VkSemaphore *const renderFinishedSemaphore, VkFence *const inFlightFence)
+int createSyncObjects(const PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkDevice *const device, VkSemaphore *const imageAvailableSemaphore, VkSemaphore *const renderFinishedSemaphore, VkFence *const inFlightFence)
 {
 	VkSemaphoreCreateInfo semaphoreInfo = {};
 	semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -9,8 +9,8 @@ int createSyncObjects(PFN_vkGetDeviceProcAddr pfn_vkGetDeviceProcAddr, const VkD
 	fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
 	fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
-	PFN_vkCreateSemaphore pfn_vkCreateSemaphore = (PFN_vkCreateSemaphore)pfn_vkGetDeviceProcAddr(*device, "vkCreateSemaphore");
-	PFN_vkCreateFence pfn_vkCreateFence = (PFN_vkCreateFence)pfn_vkGetDeviceProcAddr(*device, "vkCreateFence");
+	const PFN_vkCreateSemaphore pfn_vkCreateSemaphore = (PFN_vkCreateSemaphore) pfn_vkGetDeviceProcAddr(*device, "vkCreateSemaphore");
+	const PFN_vkCreateFence pfn_vkCreateFence = (PFN_vkCreateFence) pfn_vkGetDeviceProcAddr(*device, "vkCreateFence");
 
 	for (uint32_t i = 0; i < IMAGE_COUNT; i++)
 	{

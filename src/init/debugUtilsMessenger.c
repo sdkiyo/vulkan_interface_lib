@@ -1,4 +1,4 @@
-#include "../include/vk.h"
+#include "vk.h"
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT type, const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)
 {
@@ -44,9 +44,9 @@ void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* debug
 	debugCreateInfo->pfnUserCallback = debugCallback;
 }
 
-int createDebugUtilsMessenger(PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
+int createDebugUtilsMessenger(const PFN_vkGetInstanceProcAddr pfn_vkGetInstanceProcAddr, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
 {
-	PFN_vkCreateDebugUtilsMessengerEXT pfn_vkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT)pfn_vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
+	const PFN_vkCreateDebugUtilsMessengerEXT pfn_vkCreateDebugUtilsMessengerEXT = (PFN_vkCreateDebugUtilsMessengerEXT) pfn_vkGetInstanceProcAddr(*instance, "vkCreateDebugUtilsMessengerEXT");
 
 	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
 	fillDebugUtilsMessengerCreateInfo(&debugCreateInfo);

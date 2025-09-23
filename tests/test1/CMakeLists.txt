@@ -12,18 +12,23 @@ find_package(glfw3 3.4 REQUIRED)
 
 set(P ../../src/)
 add_library( lava SHARED
-	${P}createInstance.c		${P}lvRun.c
-	${P}debugUtilsMessenger.c
-	${P}getShaderCode.c		${P}createShaderModule.c
-	${P}createSurface.c		${P}pickPhysicalDevice.c
-	${P}createLogicalDevice.c	${P}createSwapchain.c
-	${P}createImageViews.c		${P}createRenderPass.c
-	${P}createFramebuffers.c	${P}createGraphicsPipeline.c
-	${P}createCommandPool.c		${P}createCommandBuffer.c
-	${P}createSyncObjects.c		${P}recordCommandBuffer.c
-	${P}drawFrame.c			${P}lvTerminate.c
+	${P}init/createInstance.c		${P}lvInitVulkan.c
+	${P}init/debugUtilsMessenger.c		${P}init/createSurface.c
+	${P}init/pickPhysicalDevice.c		${P}init/createLogicalDevice.c
+	${P}swapchain/createSwapchain.c		${P}swapchain/createImageViews.c
+	${P}swapchain/createFramebuffers.c	${P}render_setup/createGraphicsPipeline.c
+	${P}render_setup/createRenderPass.c
+	${P}renderer/createCommandPool.c	${P}renderer/createCommandBuffer.c
+	${P}renderer/createSyncObjects.c	${P}renderer/recordCommandBuffer.c
+	${P}renderer/drawFrame.c
+	${P}vertex/getDescription.c		${P}vertex/createVertexBuffer.c
+	${P}vertex/createIndexBuffer.c		${P}vertex/createBuffer.c
+	${P}vertex/copyBuffer.c
+	${P}lvTerminate.c
+	${P}shaders/getShaderCode.c		${P}shaders/createShaderModule.c
 )
-#target_link_libraries(lava PUBLIC Vulkan::Vulkan)
+target_include_directories(lava PUBLIC ../../libs/gph-cmath/src/)
+target_include_directories(lava PUBLIC ../../include/)
 target_link_libraries(lava PUBLIC glfw)
 
 add_executable(${PROJECT_NAME} main.c)

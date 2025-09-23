@@ -1,4 +1,4 @@
-#include "../include/vk.h"
+#include "vk.h"
 
 int lvCreateSurface(GLFWwindow *const window, const VkInstance *const instance, VkSurfaceKHR *const surface)
 {
