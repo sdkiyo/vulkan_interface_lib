@@ -8,12 +8,12 @@
 int lvInitVulkan(lvParam *const lvparam, lvData *const lvdata, LoaderTable *const pTable)
 {
 	printf(BLUE "initVulkan() " RESET_COLOR GRAY "start" RESET_COLOR "\n");
+
 	for (int i = 0; i < VERTICES_SIZE; i++)
 	{
 		printf("pos[%d] x: %f\n", i, vertices[i].pos.x);
 		printf("pos[%d] y: %f\n", i, vertices[i].pos.y);
 	}
-
 	printf("=-------starting_params-------=" RESET_COLOR "\n");
 	printf(" layers:\n");
 	for (uint32_t i = 0; i < lvparam->validationLayersCount; i++)
@@ -88,7 +88,13 @@ int lvInitVulkan(lvParam *const lvparam, lvData *const lvdata, LoaderTable *cons
 	}
 	printf("- " BLUE "createRenderPass() " GREEN "success!" RESET_COLOR "\n");
 
-	if (createGraphicsPipeline(pTable, &lvdata->device, &lvdata->pipelineLayout, &lvdata->graphicsPipeline, &lvdata->renderPass) == -1)
+	if (createDescriptorSetLayout(pTable, &lvdata->device,&lvdata->descriptorSetLayout) == -1)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'createDescriptorSetLayout() failed'" RESET_COLOR "\n", __func__, __LINE__);
+	}
+	printf("- " BLUE "createDescriptorSetLayout() " GREEN "success!" RESET_COLOR "\n");
+
+	if (createGraphicsPipeline(pTable, &lvdata->device, &lvdata->pipelineLayout, &lvdata->graphicsPipeline, &lvdata->renderPass, &lvdata->descriptorSetLayout) == -1)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'createGraphicsPipeline() failed'" RESET_COLOR "\n", __func__, __LINE__);
 	}
@@ -117,6 +123,26 @@ int lvInitVulkan(lvParam *const lvparam, lvData *const lvdata, LoaderTable *cons
 		fprintf(stderr, RED "%s(), line %d, 'createIndexBuffer() failed'" RESET_COLOR "\n", __func__, __LINE__);
 	}
 	printf("- " BLUE "createIndexBuffer() " GREEN "success!" RESET_COLOR "\n");
+
+	if (createUniformBuffers(pTable, &lvdata->instance, &lvdata->physicalDevice, &lvdata->device, lvdata->uniformBuffers, lvdata->uniformBuffersMemory, lvdata->uniformBuffersMapped) == -1)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'createUnfiromBuffers() failed'" RESET_COLOR "\n", __func__, __LINE__);
+	}
+	printf("- " BLUE "createUniformBuffers() " GREEN "success!" RESET_COLOR "\n");
+
+
+	if (createDescriptorPool(pTable, &lvdata->device, &lvdata->descriptorPool) == -1)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'createDescriptorPool() failed'" RESET_COLOR "\n", __func__, __LINE__);
+	}
+	printf("- " BLUE "createDescriptorPool() " GREEN "success!" RESET_COLOR "\n");
+
+	if (createDescriptorSets(pTable, &lvdata->device, &lvdata->descriptorPool, &lvdata->descriptorSetLayout, lvdata->uniformBuffers, lvdata->descriptorSets) == -1)
+	{
+		fprintf(stderr, RED "%s(), line %d, 'createDescriptorSets() failed'" RESET_COLOR "\n", __func__, __LINE__);
+	}
+	printf("- " BLUE "createDescriptorSets() " GREEN "success!" RESET_COLOR "\n");
+
 
 	if (createCommandBuffer(pTable, &lvdata->device, &lvdata->commandPool, lvdata->commandBuffers) == -1)
 	{

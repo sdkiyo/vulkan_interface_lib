@@ -33,7 +33,10 @@ int recordCommandBuffer(
 	const VkExtent2D *const			swapchainExtent,
 	const VkFramebuffer *const		swapchainFramebuffers,
 	const VkBuffer *const			vertexBuffer,
-	const VkBuffer *const			indexBuffer);
+	const VkBuffer *const			indexBuffer,
+	const VkPipelineLayout *const		pipelineLayout,
+	VkDescriptorSet*			descriptorSets,
+	const uint32_t				currentFrame);
 
 
 #endif

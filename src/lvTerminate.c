@@ -33,13 +33,30 @@ int lvTerminate(lvData *const lvdata, const LoaderTable *const pTable)
 	pTable->pfn_vkDestroyRenderPass(lvdata->device, lvdata->renderPass, nullptr);
 	printf(YELLOW "- vkDestroyRenderPass()" RESET_COLOR "\n");
 
+	for (uint32_t i = 0; i < IMAGE_COUNT; i++)
+	{
+		pTable->pfn_vkDestroyBuffer(lvdata->device, lvdata->uniformBuffers[i], nullptr);
+		pTable->pfn_vkFreeMemory(lvdata->device, lvdata->uniformBuffersMemory[i], nullptr);
+	}
+	printf("- destroy " YELLOW "uniformBuffers" RESET_COLOR "\n");
+
+
+        pTable->pfn_vkDestroyDescriptorPool(lvdata->device, lvdata->descriptorPool, nullptr);
+	printf(YELLOW "- vkDestroyDescriptorPool()" RESET_COLOR "\n");
+
+
+	pTable->pfn_vkDestroyDescriptorSetLayout(lvdata->device, lvdata->descriptorSetLayout, nullptr);
+	printf(YELLOW "- vkDestroyDescriptorSetLayout()" RESET_COLOR "\n");
+
 	pTable->pfn_vkDestroyBuffer(lvdata->device, lvdata->vertexBuffer, nullptr);
 	printf(YELLOW "- vkDestroyBuffer() vertex" RESET_COLOR "\n");
+
 	pTable->pfn_vkFreeMemory(lvdata->device, lvdata->vertexBufferMemory, nullptr);
 	printf(YELLOW "- vkFreeMemory() vertex" RESET_COLOR "\n");
 
 	pTable->pfn_vkDestroyBuffer(lvdata->device, lvdata->indexBuffer, nullptr);
 	printf(YELLOW "- vkDestroyBuffer() index" RESET_COLOR "\n");
+
 	pTable->pfn_vkFreeMemory(lvdata->device, lvdata->indexBufferMemory, nullptr);
 	printf(YELLOW "- vkFreeMemory() index" RESET_COLOR "\n");
 

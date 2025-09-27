@@ -50,8 +50,8 @@ void getAttributeDescriptions(VkVertexInputAttributeDescription *const attribute
 
 
 typedef struct Vertex {
-	cgm_vec2 pos;
-	cgm_vec3 color;
+	vec2 pos;
+	vec3 color;
 } Vertex;
 
 static const Vertex vertices[] = {

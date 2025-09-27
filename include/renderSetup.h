@@ -16,6 +16,7 @@ int createGraphicsPipeline(
 	const VkDevice *const			device,
 	VkPipelineLayout*			pipelineLayout,
 	VkPipeline*				graphicsPipeline,
-	const VkRenderPass *const		renderPass);
+	const VkRenderPass *const		renderPass,
+	const VkDescriptorSetLayout *const	descriptorSetLayout);
 
 #endif

@@ -50,12 +50,12 @@ int main()
 	LoaderTable loaderTable = {};
 	pfn_lvInitVulkan(&param, &lvdata, &loaderTable);
 
-	char ch;
+	char ch = ' ';
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
 		pfn_drawFrame(&lvdata, &loaderTable);
-		ch = getchar();
+		//ch = getchar();
 		if (ch == 'q')
 		{
 			break;

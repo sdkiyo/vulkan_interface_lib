@@ -70,6 +70,15 @@ typedef struct LoaderTable {
 	PFN_vkDestroyImageView			pfn_vkDestroyImageView;
 	PFN_vkDestroySwapchainKHR		pfn_vkDestroySwapchainKHR;
 	PFN_vkDestroyDevice			pfn_vkDestroyDevice;
+
+	PFN_vkCreateDescriptorSetLayout		pfn_vkCreateDescriptorSetLayout;
+	PFN_vkDestroyDescriptorSetLayout	pfn_vkDestroyDescriptorSetLayout;
+
+	PFN_vkCreateDescriptorPool		pfn_vkCreateDescriptorPool;
+	PFN_vkAllocateDescriptorSets		pfn_vkAllocateDescriptorSets;
+	PFN_vkUpdateDescriptorSets		pfn_vkUpdateDescriptorSets;
+	PFN_vkDestroyDescriptorPool		pfn_vkDestroyDescriptorPool;
+	PFN_vkCmdBindDescriptorSets		pfn_vkCmdBindDescriptorSets;
 } LoaderTable;
 
 int funcPreLoader(

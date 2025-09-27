@@ -1,7 +1,7 @@
 #include "renderer.h"
 #include "vertex.h"
 
-int recordCommandBuffer(const LoaderTable *const pTable, const VkDevice *const device, VkCommandBuffer* commandBuffer, const uint32_t imageIndex, const VkPipeline *const graphicsPipeline, const VkRenderPass *const renderPass, const VkExtent2D *const swapchainExtent, const VkFramebuffer *const swapchainFramebuffers, const VkBuffer *const vertexBuffer, const VkBuffer *const indexBuffer)
+int recordCommandBuffer(const LoaderTable *const pTable, const VkDevice *const device, VkCommandBuffer* commandBuffer, const uint32_t imageIndex, const VkPipeline *const graphicsPipeline, const VkRenderPass *const renderPass, const VkExtent2D *const swapchainExtent, const VkFramebuffer *const swapchainFramebuffers, const VkBuffer *const vertexBuffer, const VkBuffer *const indexBuffer, const VkPipelineLayout *const pipelineLayout, VkDescriptorSet* descriptorSets, const uint32_t currentFrame)
 {
         VkCommandBufferBeginInfo beginInfo = {};
         beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
@@ -47,6 +47,8 @@ int recordCommandBuffer(const LoaderTable *const pTable, const VkDevice *const d
             pTable->pfn_vkCmdBindVertexBuffers(*commandBuffer, 0, 1, vertexBuffers, offsets);
 
             pTable->pfn_vkCmdBindIndexBuffer(*commandBuffer, *indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+
+            pTable->pfn_vkCmdBindDescriptorSets(*commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
 
             pTable->pfn_vkCmdDrawIndexed(*commandBuffer, INDICES_SIZE, 1, 0, 0, 0);
 

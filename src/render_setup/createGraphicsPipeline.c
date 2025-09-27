@@ -2,7 +2,7 @@
 #include "vertex.h"
 #include "shader.h"
 
-int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, const VkRenderPass *const renderPass)
+int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, const VkRenderPass *const renderPass, const VkDescriptorSetLayout *const descriptorSetLayout)
 {
 	uint32_t vert_code_size = 0;
 	uint32_t frag_code_size = 0;
@@ -57,7 +57,7 @@ int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *cons
         rasterizer.polygonMode = VK_POLYGON_MODE_FILL;// POINT, LINE, FILL
         rasterizer.lineWidth = 1.0f;
         rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-        rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+        rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
         rasterizer.depthBiasEnable = VK_FALSE;
 
         VkPipelineMultisampleStateCreateInfo multisampling = {};
@@ -92,7 +92,8 @@ int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *cons
 
         VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-        pipelineLayoutInfo.setLayoutCount = 0;
+        pipelineLayoutInfo.setLayoutCount = 1;
+        pipelineLayoutInfo.pSetLayouts = descriptorSetLayout;
         pipelineLayoutInfo.pushConstantRangeCount = 0;
 
         if (pTable->pfn_vkCreatePipelineLayout(*device, &pipelineLayoutInfo, nullptr, pipelineLayout) != VK_SUCCESS)

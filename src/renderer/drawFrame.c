@@ -11,9 +11,11 @@ int drawFrame(lvData *const lv, const LoaderTable *const pTable)
 	uint32_t imageIndex = 0;
 	pTable->pfn_vkAcquireNextImageKHR(lv->device, lv->swapchain, UINT64_MAX, lv->imageAvailableSemaphore[lv->currentFrame], VK_NULL_HANDLE, &imageIndex);
 
+	updateUniformBuffer(lv->currentFrame, lv->uniformBuffersMapped, &lv->swapchainExtent);
+
 	pTable->pfn_vkResetCommandBuffer(lv->commandBuffers[lv->currentFrame], 0);
 
-	recordCommandBuffer(pTable, &lv->device, &lv->commandBuffers[lv->currentFrame], imageIndex, &lv->graphicsPipeline, &lv->renderPass, &lv->swapchainExtent, lv->swapchainFramebuffers, &lv->vertexBuffer, &lv->indexBuffer);
+	recordCommandBuffer(pTable, &lv->device, &lv->commandBuffers[lv->currentFrame], imageIndex, &lv->graphicsPipeline, &lv->renderPass, &lv->swapchainExtent, lv->swapchainFramebuffers, &lv->vertexBuffer, &lv->indexBuffer, &lv->pipelineLayout, lv->descriptorSets, lv->currentFrame);
 
 	VkSubmitInfo submitInfo = {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;

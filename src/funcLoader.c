@@ -79,6 +79,14 @@ int funcDeviceLoader(LoaderTable *const pTable, const VkDevice *const device)
 	pTable->pfn_vkDestroySwapchainKHR			= (PFN_vkDestroySwapchainKHR) pTable->pfn_vkGetDeviceProcAddr(*device, "vkDestroySwapchainKHR");
 	pTable->pfn_vkDestroyDevice				= (PFN_vkDestroyDevice) pTable->pfn_vkGetDeviceProcAddr(*device, "vkDestroyDevice");
 
+	pTable->pfn_vkCreateDescriptorSetLayout			= (PFN_vkCreateDescriptorSetLayout) pTable->pfn_vkGetDeviceProcAddr(*device, "vkCreateDescriptorSetLayout");
+	pTable->pfn_vkDestroyDescriptorSetLayout		= (PFN_vkDestroyDescriptorSetLayout) pTable->pfn_vkGetDeviceProcAddr(*device, "vkDestroyDescriptorSetLayout");
+
+	pTable->pfn_vkCreateDescriptorPool			= (PFN_vkCreateDescriptorPool) pTable->pfn_vkGetDeviceProcAddr(*device, "vkCreateDescriptorPool");
+	pTable->pfn_vkAllocateDescriptorSets			= (PFN_vkAllocateDescriptorSets) pTable->pfn_vkGetDeviceProcAddr(*device, "vkAllocateDescriptorSets");
+	pTable->pfn_vkUpdateDescriptorSets			= (PFN_vkUpdateDescriptorSets) pTable->pfn_vkGetDeviceProcAddr(*device, "vkUpdateDescriptorSets");
+	pTable->pfn_vkDestroyDescriptorPool	= (PFN_vkDestroyDescriptorPool) pTable->pfn_vkGetDeviceProcAddr(*device, "vkDestroyDescriptorPool");
+	pTable->pfn_vkCmdBindDescriptorSets	= (PFN_vkCmdBindDescriptorSets) pTable->pfn_vkGetDeviceProcAddr(*device, "vkCmdBindDescriptorSets");
 
 	return 0;
 }
