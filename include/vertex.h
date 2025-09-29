@@ -6,66 +6,52 @@
 
 int createBuffer(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	const VkPhysicalDevice *const		physicalDevice,
-	const VkDevice *const			device,
+	const VkInstance *const			pInstance,
+	const VkPhysicalDevice *const		pPhysicalDevice,
+	const VkDevice *const			pDevice,
 	const VkDeviceSize			size,
 	const VkBufferUsageFlags		usage,
 	VkMemoryPropertyFlags			properties,
-	VkBuffer*				buffer,
-	VkDeviceMemory*				bufferMemory);
+	VkBuffer*				pBuffer,
+	VkDeviceMemory*				pBufferMemory);
 
 int copyBuffer(
 	const LoaderTable *const		pTable,
-	const VkDevice *const			device,
-	const VkCommandPool *const		commandPool,
-	const VkQueue *const			queue,
-	const VkBuffer *const			srcBuffer,
-	const VkBuffer *const			dstBuffer,
+	const VkDevice *const			pDevice,
+	const VkCommandPool *const		pCommandPool,
+	const VkQueue *const			pQueue,
+	const VkBuffer *const			pSrcBuffer,
+	const VkBuffer *const			pDstBuffer,
 	const VkDeviceSize			size);
 
 int createIndexBuffer(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	const VkPhysicalDevice *const		physicalDevice,
-	const VkDevice *const			device,
-	const VkCommandPool *const		commandPool,
-	const VkQueue *const			queue,
-	VkBuffer*				indexBuffer,
-	VkDeviceMemory*				indexBufferMemory);
+	const VkInstance *const			pInstance,
+	const VkPhysicalDevice *const		pPhysicalDevice,
+	const VkDevice *const			pDevice,
+	const VkCommandPool *const		pCommandPool,
+	const VkQueue *const			pQueue,
+	VkBuffer*				pIndexBuffer,
+	VkDeviceMemory*				pIndexBufferMemory,
+	const uint16_t *const			pIndices,
+	const uint32_t				indices_size);
 
 int createVertexBuffer(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	const VkPhysicalDevice *const		physicalDevice,
-	const VkDevice *const			device,
-	const VkCommandPool *const		commandPool,
-	const VkQueue *const			queue,
-	VkBuffer*				vertexBuffer,
-	VkDeviceMemory*				vertexBufferMemory);
+	const VkInstance *const			pInstance,
+	const VkPhysicalDevice *const		pPhysicalDevice,
+	const VkDevice *const			pDevice,
+	const VkCommandPool *const		pCommandPool,
+	const VkQueue *const			pQueue,
+	VkBuffer*				pVertexBuffer,
+	VkDeviceMemory*				pVertexBufferMemory,
+	const Vertex *const			pVertices,
+	const uint32_t				vertices_size);
 
-void getBindingDescription(VkVertexInputBindingDescription *const bindingDescription);
+void getBindingDescription(VkVertexInputBindingDescription *const pBindingDescription);
 
-void getAttributeDescriptions(VkVertexInputAttributeDescription *const attributeDescriptions);
+void getAttributeDescriptions(VkVertexInputAttributeDescription *const pAttributeDescriptions);
 
-
-typedef struct Vertex {
-	vec2 pos;
-	vec3 color;
-} Vertex;
-
-static const Vertex vertices[] = {
-	{{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
-	{{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
-	{{0.5f, 0.5f}, {0.0f, 0.0f, 1.0f}},
-	{{-0.5f, 0.5f}, {1.0f, 1.0f, 1.0f}}
-};
-static const uint32_t VERTICES_SIZE = 4;
-
-static const uint16_t indices[] = {
-	0, 1, 2, 2, 3, 0
-};
-static const uint32_t INDICES_SIZE = 6;
 
 
 

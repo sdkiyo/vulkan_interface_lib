@@ -1,21 +1,19 @@
 #include "vk.h"
 #include "renderer.h"
 
-int drawFrame(lvData *const lv, const LoaderTable *const pTable)
+int drawFrame(lvData *const lv, const LoaderTable *const pTable, const lvParam *const lvparam)
 {
-	printf("drawFrame()\n");
-
 	pTable->pfn_vkWaitForFences(lv->device, 1, &lv->inFlightFence[lv->currentFrame], VK_TRUE, UINT64_MAX);
 	pTable->pfn_vkResetFences(lv->device, 1, &lv->inFlightFence[lv->currentFrame]);
 
 	uint32_t imageIndex = 0;
 	pTable->pfn_vkAcquireNextImageKHR(lv->device, lv->swapchain, UINT64_MAX, lv->imageAvailableSemaphore[lv->currentFrame], VK_NULL_HANDLE, &imageIndex);
 
-	updateUniformBuffer(lv->currentFrame, lv->uniformBuffersMapped, &lv->swapchainExtent);
+	updateUniformBuffer(lv->currentFrame, lv->uniformBuffersMapped, &lv->swapchainExtent, lvparam->pCam_pos, lvparam->pCam_target, lvparam->pCam_up, lvparam->fov, lvparam->near, lvparam->far);
 
 	pTable->pfn_vkResetCommandBuffer(lv->commandBuffers[lv->currentFrame], 0);
 
-	recordCommandBuffer(pTable, &lv->device, &lv->commandBuffers[lv->currentFrame], imageIndex, &lv->graphicsPipeline, &lv->renderPass, &lv->swapchainExtent, lv->swapchainFramebuffers, &lv->vertexBuffer, &lv->indexBuffer, &lv->pipelineLayout, lv->descriptorSets, lv->currentFrame);
+	recordCommandBuffer(pTable, &lv->device, &lv->commandBuffers[lv->currentFrame], imageIndex, &lv->graphicsPipeline, &lv->renderPass, &lv->swapchainExtent, lv->swapchainFramebuffers, &lv->vertexBuffer, &lv->indexBuffer, &lv->pipelineLayout, lv->descriptorSets, lv->currentFrame, lvparam->indices_size);
 
 	VkSubmitInfo submitInfo = {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;

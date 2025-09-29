@@ -7,29 +7,29 @@
 
 int createSwapchain(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	const VkPhysicalDevice *const		physicalDevice,
-	const VkSurfaceKHR *const		surface,
-	const VkDevice *const			device,
-	VkSwapchainKHR*				swapchain,
-	VkImage*				swapchainImages,
-	VkFormat*				swapchainImageFormat,
-	VkExtent2D*				swapchainExtent);
+	const VkInstance *const			pInstance,
+	const VkPhysicalDevice *const		pPhysicalDevice,
+	const VkSurfaceKHR *const		pSurface,
+	const VkDevice *const			pDevice,
+	VkSwapchainKHR*				pSwapchain,
+	VkImage*				pSwapchainImages,
+	VkFormat*				pSwapchainImageFormat,
+	VkExtent2D*				pSwapchainExtent);
 
 int createImageViews(
 	const LoaderTable *const		pTable,
-	const VkDevice *const			device,
-	const VkFormat *const			swapchainImageFormat,
-	const VkImage *const			swapchainImages,
-	VkImageView*				swapchainImageViews);
+	const VkDevice *const			pDevice,
+	const VkFormat *const			pSwapchainImageFormat,
+	const VkImage *const			pSwapchainImages,
+	VkImageView*				pSwapchainImageViews);
 
 int createFramebuffers(
 	const LoaderTable *const		pTable,
-	const VkDevice *const			device,
-	const VkExtent2D *const			swapchainExtent,
-	const VkRenderPass *const		renderPass,
-	const VkImageView *const		swapchainImageViews,
-	VkFramebuffer*				swapchainFramebuffers);
+	const VkDevice *const			pDevice,
+	const VkExtent2D *const			pSwapchainExtent,
+	const VkRenderPass *const		pRenderPass,
+	const VkImageView *const		pSwapchainImageViews,
+	VkFramebuffer*				pSwapchainFramebuffers);
 
 
 #endif

@@ -1,9 +1,9 @@
 #include "shader.h"
 
-char* getShaderCode(const char *const file_name, uint32_t *const pShaderSize)
+char* getShaderCode(const char *const pFile_name, uint32_t *const pShaderSize)
 {
 	FILE *file = nullptr;
-	file = fopen(file_name, "rb+");
+	file = fopen(pFile_name, "rb+");
 	if(file == nullptr)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to read shader'" RESET_COLOR "\n", __func__, __LINE__);

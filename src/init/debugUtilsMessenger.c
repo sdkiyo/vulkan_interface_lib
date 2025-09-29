@@ -1,6 +1,6 @@
 #include "pre.h"
 
-VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT type, const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* userData)
+VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverityFlagBitsEXT severity, VkDebugUtilsMessageTypeFlagsEXT type, const VkDebugUtilsMessengerCallbackDataEXT* callbackData, void* pUserData)
 {
 	if (severity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT)
 	{
@@ -26,30 +26,30 @@ VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback( VkDebugUtilsMessageSeverityFlagBit
 	return VK_FALSE;
 }
 
-void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* debugCreateInfo)
+void fillDebugUtilsMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT* pDebugCreateInfo)
 {
-	debugCreateInfo->sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+	pDebugCreateInfo->sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
 
-	debugCreateInfo->messageSeverity =
+	pDebugCreateInfo->messageSeverity =
 	//	VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
 	//	VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT;
 
-	debugCreateInfo->messageType =
+	pDebugCreateInfo->messageType =
 		VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
 		VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
 
-	debugCreateInfo->pfnUserCallback = debugCallback;
+	pDebugCreateInfo->pfnUserCallback = debugCallback;
 }
 
-int createDebugUtilsMessenger(const LoaderTable *const pTable, const VkInstance *const instance, VkDebugUtilsMessengerEXT *const debugMessenger)
+int createDebugUtilsMessenger(const LoaderTable *const pTable, const VkInstance *const pInstance, VkDebugUtilsMessengerEXT *const pDebugMessenger)
 {
 	VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo = {};
 	fillDebugUtilsMessengerCreateInfo(&debugCreateInfo);
 
-	if (pTable->pfn_vkCreateDebugUtilsMessengerEXT(*instance, &debugCreateInfo, nullptr, debugMessenger) != VK_SUCCESS)
+	if (pTable->pfn_vkCreateDebugUtilsMessengerEXT(*pInstance, &debugCreateInfo, nullptr, pDebugMessenger) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create debugUtilsMessenger'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;

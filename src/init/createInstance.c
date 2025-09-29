@@ -1,7 +1,7 @@
 #include "pre.h"
 
 
-int lvCreateInstance(const LoaderTable *const pTable, const char* const* validationLayers, const uint32_t validationLayersCount, const char* const* extensions, const uint32_t extensionsCount, VkInstance *const instance)
+int createInstance(const LoaderTable *const pTable, const char* const* ppValidationLayers, const uint32_t validationLayersCount, const char* const* ppExtensions, const uint32_t extensionsCount, VkInstance *const pInstance)
 {
 	VkApplicationInfo appInfo = {};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -15,11 +15,11 @@ int lvCreateInstance(const LoaderTable *const pTable, const char* const* validat
 	createInfo.pNext = &debugCreateInfo;
 	createInfo.pApplicationInfo = &appInfo;
 	createInfo.enabledLayerCount = validationLayersCount;
-	createInfo.ppEnabledLayerNames = validationLayers;
+	createInfo.ppEnabledLayerNames = ppValidationLayers;
 	createInfo.enabledExtensionCount = extensionsCount;
-	createInfo.ppEnabledExtensionNames = extensions;
+	createInfo.ppEnabledExtensionNames = ppExtensions;
 
-	if (pTable->pfn_vkCreateInstance(&createInfo, nullptr, instance) != VK_SUCCESS)
+	if (pTable->pfn_vkCreateInstance(&createInfo, nullptr, pInstance) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create instance'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;

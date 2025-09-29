@@ -1,22 +1,22 @@
 #include "vertex.h"
 
 
-void getBindingDescription(VkVertexInputBindingDescription *const bindingDescription)
+void getBindingDescription(VkVertexInputBindingDescription *const pBindingDescription)
 {
-	bindingDescription->binding = 0;
-	bindingDescription->stride = sizeof(Vertex);
-	bindingDescription->inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+	pBindingDescription->binding = 0;
+	pBindingDescription->stride = sizeof(Vertex);
+	pBindingDescription->inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 }
 
-void getAttributeDescriptions(VkVertexInputAttributeDescription *const attributeDescriptions)
+void getAttributeDescriptions(VkVertexInputAttributeDescription *const pAttributeDescriptions)
 {
-	attributeDescriptions[0].binding = 0;
-	attributeDescriptions[0].location = 0;
-	attributeDescriptions[0].format = VK_FORMAT_R32G32_SFLOAT;
-	attributeDescriptions[0].offset = offsetof(Vertex, pos);
+	pAttributeDescriptions[0].binding = 0;
+	pAttributeDescriptions[0].location = 0;
+	pAttributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
+	pAttributeDescriptions[0].offset = offsetof(Vertex, pos);
 
-	attributeDescriptions[1].binding = 0;
-	attributeDescriptions[1].location = 1;
-	attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
-	attributeDescriptions[1].offset = offsetof(Vertex, color);
+	pAttributeDescriptions[1].binding = 0;
+	pAttributeDescriptions[1].location = 1;
+	pAttributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
+	pAttributeDescriptions[1].offset = offsetof(Vertex, color);
 }

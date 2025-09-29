@@ -9,15 +9,33 @@
 
 #define IMAGE_COUNT 4
 
+
+
+typedef struct Vertex {
+	vec3 pos;
+	vec3 color;
+} Vertex;
+
+
 typedef struct lvParam {
-	GLFWwindow*		window;
-	const char* const*	validationLayers;
-	const char* const*	instanceExtensions;
-	const char* const*	deviceExtensions;
-	uint32_t		validationLayersCount;
-	uint32_t		instanceExtensionsCount;
-	uint32_t		deviceExtensionsCount;
-	uint32_t		imageCount;
+	GLFWwindow*			pWindow;
+	const char* const*		ppValidationLayers;
+	const char* const*		ppInstanceExtensions;
+	const char* const*		ppDeviceExtensions;
+	uint32_t			validationLayersCount;
+	uint32_t			instanceExtensionsCount;
+	uint32_t			deviceExtensionsCount;
+	uint32_t			imageCount;
+	const Vertex*			pVertices;
+	uint32_t			vertices_size;
+	const uint16_t*			pIndices;
+	uint32_t			indices_size;
+	vec3*				pCam_pos;
+	vec3*				pCam_target;
+	vec3*				pCam_up;
+	float				fov;
+	float				near;
+	float				far;
 } lvParam;
 
 typedef struct lvData {
@@ -61,17 +79,18 @@ typedef struct lvData {
 	uint32_t			currentFrame;
 } lvData;
 
+
+
 typedef struct UniformBufferObject {
 	float model[4][4];
 	float view[4][4];
 	float proj[4][4];
 } UniformBufferObject;
 
-static float f = 0.0f;
 
 int createDescriptorSetLayout(const LoaderTable *const pTable, const VkDevice *const device, VkDescriptorSetLayout *const descriptorSetLayout);
 int createUniformBuffers(const LoaderTable *const pTable, const VkInstance *const instance, const VkPhysicalDevice *const physicalDevice, const VkDevice *const device, VkBuffer *const uniformBuffers, VkDeviceMemory *const uniformBuffersMemory, void* *const uniformBuffersMapped);
-int updateUniformBuffer(uint32_t currentImage, void** uniformBuffersMapped, const VkExtent2D *const swapchainExtent);
+int updateUniformBuffer(uint32_t currentImage, void** pUniformBuffersMapped, const VkExtent2D *const pSwapchainExtent, const vec3 *const pCam_pos, const vec3 *const pCam_target, const vec3 *const pCam_up, const float fov, const float near, const float far);
 
 int createDescriptorPool(const LoaderTable *const pTable, const VkDevice *const device, VkDescriptorPool* descriptorPool);
 int createDescriptorSets(const LoaderTable *const pTable, const VkDevice *const device, const VkDescriptorPool *const descriptorPool, const VkDescriptorSetLayout *const descriptorSetLayout, const VkBuffer *const uniformBuffers, VkDescriptorSet* descriptorSets);
@@ -80,8 +99,8 @@ int createDescriptorSets(const LoaderTable *const pTable, const VkDevice *const 
 
 typedef VkResult (*PFN_glfwCreateWindowSurface)(VkInstance instance, GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
 
-typedef int (*PFN_lvInitVulkan)(lvParam *const lvparam, lvData *const lvdata, LoaderTable *const pTable);
-typedef int (*PFN_drawFrame)(lvData *const lvdata, const LoaderTable *const pTable);
+typedef int (*PFN_initVulkan)(lvParam *const lvparam, lvData *const lvdata, LoaderTable *const pTable);
+typedef int (*PFN_drawFrame)(lvData *const lvdata, const LoaderTable *const pTable, const lvParam *const lvparam);
 typedef int (*PFN_lvTerminate)(lvData *const lvdata, const LoaderTable *const pTable);
 
 

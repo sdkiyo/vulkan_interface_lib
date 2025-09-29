@@ -17,7 +17,7 @@ uint32_t findMemoryType(const LoaderTable *const pTable, const VkInstance *const
 	fprintf(stderr, RED "%s(), line %d, 'failed.'" RESET_COLOR "\n", __func__, __LINE__);
 }
 
-int createBuffer(const LoaderTable *const pTable, const VkInstance *const instance, const VkPhysicalDevice *const physicalDevice, const VkDevice *const device, const VkDeviceSize size, const VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer* buffer, VkDeviceMemory* bufferMemory)
+int createBuffer( const LoaderTable *const pTable, const VkInstance *const pInstance, const VkPhysicalDevice *const pPhysicalDevice, const VkDevice *const pDevice, const VkDeviceSize size, const VkBufferUsageFlags usage, VkMemoryPropertyFlags properties, VkBuffer* pBuffer, VkDeviceMemory* pBufferMemory)
 {
 	VkBufferCreateInfo bufferInfo = {};
 	bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -25,27 +25,27 @@ int createBuffer(const LoaderTable *const pTable, const VkInstance *const instan
 	bufferInfo.usage = usage;
 	bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
-	if (pTable->pfn_vkCreateBuffer(*device, &bufferInfo, nullptr, buffer) != VK_SUCCESS)
+	if (pTable->pfn_vkCreateBuffer(*pDevice, &bufferInfo, nullptr, pBuffer) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create vertex or index buffer, vkCreateBuffer() failed.'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
 
 	VkMemoryRequirements memRequirements;
-	pTable->pfn_vkGetBufferMemoryRequirements(*device, *buffer, &memRequirements);
+	pTable->pfn_vkGetBufferMemoryRequirements(*pDevice, *pBuffer, &memRequirements);
 
 	VkMemoryAllocateInfo allocInfo = {};
 	allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
 	allocInfo.allocationSize = memRequirements.size;
-	allocInfo.memoryTypeIndex = findMemoryType(pTable, instance, physicalDevice, device, memRequirements.memoryTypeBits, properties);
+	allocInfo.memoryTypeIndex = findMemoryType(pTable, pInstance, pPhysicalDevice, pDevice, memRequirements.memoryTypeBits, properties);
 
-	if (pTable->pfn_vkAllocateMemory(*device, &allocInfo, nullptr, bufferMemory) != VK_SUCCESS)
+	if (pTable->pfn_vkAllocateMemory(*pDevice, &allocInfo, nullptr, pBufferMemory) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create vertex or index buffer, vkAllocateMemory() failed.'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
 
-	pTable->pfn_vkBindBufferMemory(*device, *buffer, *bufferMemory, 0);
+	pTable->pfn_vkBindBufferMemory(*pDevice, *pBuffer, *pBufferMemory, 0);
 
 	return 0;
 }

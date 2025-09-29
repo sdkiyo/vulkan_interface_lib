@@ -7,16 +7,16 @@
 
 int createRenderPass(
 	const LoaderTable *const		pTable,
-	const VkDevice *const			device,
-	const VkFormat *const			swapchainImageFormat,
-	VkRenderPass*				renderPass);
+	const VkDevice *const			pDevice,
+	const VkFormat *const			pSwapchainImageFormat,
+	VkRenderPass*				pRenderPass);
 
 int createGraphicsPipeline(
 	const LoaderTable *const		pTable,
-	const VkDevice *const			device,
-	VkPipelineLayout*			pipelineLayout,
-	VkPipeline*				graphicsPipeline,
-	const VkRenderPass *const		renderPass,
-	const VkDescriptorSetLayout *const	descriptorSetLayout);
+	const VkDevice *const			pDevice,
+	VkPipelineLayout*			pPipelineLayout,
+	VkPipeline*				pGraphicsPipeline,
+	const VkRenderPass *const		pRenderPass,
+	const VkDescriptorSetLayout *const	pDescriptorSetLayout);
 
 #endif

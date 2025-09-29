@@ -6,7 +6,7 @@
 
 typedef struct LoaderTable {
 //----------PRE------------
-	void* vkLib;
+	void*					vkLib;
 	PFN_vkGetInstanceProcAddr		pfn_vkGetInstanceProcAddr;
 	PFN_vkGetDeviceProcAddr			pfn_vkGetDeviceProcAddr;
 	PFN_vkCreateInstance			pfn_vkCreateInstance;
@@ -82,15 +82,15 @@ typedef struct LoaderTable {
 } LoaderTable;
 
 int funcPreLoader(
-	LoaderTable *const pTable);
+	LoaderTable *const		pTable);
 
 int funcInstanceLoader(
-	LoaderTable *const pTable,
-	const VkInstance *const instance);
+	LoaderTable *const		pTable,
+	const VkInstance *const		pInstance);
 
 int funcDeviceLoader(
-	LoaderTable *const pTable,
-	const VkDevice *const device);
+	LoaderTable *const		pTable,
+	const VkDevice *const		pDevice);
 
 
 #endif

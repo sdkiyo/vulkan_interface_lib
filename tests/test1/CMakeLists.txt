@@ -26,9 +26,9 @@ add_library( lava SHARED
 	${P}vertex/copyBuffer.c
 	${P}lvTerminate.c			${P}funcLoader.c
 	${P}shaders/getShaderCode.c		${P}shaders/createShaderModule.c
-	${P}createDescriptorSetLayout.c		${P}createUniformBuffers.c
-	${P}updateUniformBuffer.c		${P}createDescriptorPool.c
-	${P}createDescriptorSets.c
+	${P}other/createDescriptorSetLayout.c	${P}other/createUniformBuffers.c
+	${P}other/updateUniformBuffer.c		${P}other/createDescriptorPool.c
+	${P}other/createDescriptorSets.c
 )
 target_include_directories(lava PUBLIC ../../libs/test_math/)
 target_include_directories(lava PUBLIC ../../include/)

@@ -1,65 +1,65 @@
 #include "renderer.h"
 #include "vertex.h"
 
-int recordCommandBuffer(const LoaderTable *const pTable, const VkDevice *const device, VkCommandBuffer* commandBuffer, const uint32_t imageIndex, const VkPipeline *const graphicsPipeline, const VkRenderPass *const renderPass, const VkExtent2D *const swapchainExtent, const VkFramebuffer *const swapchainFramebuffers, const VkBuffer *const vertexBuffer, const VkBuffer *const indexBuffer, const VkPipelineLayout *const pipelineLayout, VkDescriptorSet* descriptorSets, const uint32_t currentFrame)
+int recordCommandBuffer(const LoaderTable *const pTable, const VkDevice *const pDevice, VkCommandBuffer* pCommandBuffer, const uint32_t imageIndex, const VkPipeline *const pGraphicsPipeline, const VkRenderPass *const pRenderPass, const VkExtent2D *const pSwapchainExtent, const VkFramebuffer *const pSwapchainFramebuffers, const VkBuffer *const pVertexBuffer, const VkBuffer *const pIndexBuffer, const VkPipelineLayout *const pPipelineLayout, VkDescriptorSet* pDescriptorSets, const uint32_t currentFrame, const uint32_t indices_size)
 {
-        VkCommandBufferBeginInfo beginInfo = {};
-        beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	VkCommandBufferBeginInfo beginInfo = {};
+	beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
 
-        if (pTable->pfn_vkBeginCommandBuffer(*commandBuffer, &beginInfo) != VK_SUCCESS)
+	if (pTable->pfn_vkBeginCommandBuffer(*pCommandBuffer, &beginInfo) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to vkBeginCommandBuffer()'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
 	}
 
-        VkRenderPassBeginInfo renderPassInfo = {};
-        renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-        renderPassInfo.renderPass = *renderPass;
-        renderPassInfo.framebuffer = swapchainFramebuffers[imageIndex];
-        renderPassInfo.renderArea.offset = (VkOffset2D){0, 0};
-        renderPassInfo.renderArea.extent = *swapchainExtent;
+	VkRenderPassBeginInfo renderPassInfo = {};
+	renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+	renderPassInfo.renderPass = *pRenderPass;
+	renderPassInfo.framebuffer = pSwapchainFramebuffers[imageIndex];
+	renderPassInfo.renderArea.offset = (VkOffset2D){0, 0};
+	renderPassInfo.renderArea.extent = *pSwapchainExtent;
 
-        VkClearValue clearColor = {{{0.01f, 0.01f, 0.01f, 1.0f}}};
-        renderPassInfo.clearValueCount = 1;
-        renderPassInfo.pClearValues = &clearColor;
+	VkClearValue clearColor = {{{0.01f, 0.01f, 0.01f, 1.0f}}};
+	renderPassInfo.clearValueCount = 1;
+	renderPassInfo.pClearValues = &clearColor;
 
-        pTable->pfn_vkCmdBeginRenderPass(*commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+	pTable->pfn_vkCmdBeginRenderPass(*pCommandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-        pTable->pfn_vkCmdBindPipeline(*commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *graphicsPipeline);
+	pTable->pfn_vkCmdBindPipeline(*pCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *pGraphicsPipeline);
 
-        VkViewport viewport = {};
-        viewport.x = 0.0f;
-        viewport.y = 0.0f;
-        viewport.width = (float)(swapchainExtent->width);
-        viewport.height = (float)(swapchainExtent->height);
-        viewport.minDepth = 0.0f;
-        viewport.maxDepth = 1.0f;
-        pTable->pfn_vkCmdSetViewport(*commandBuffer, 0, 1, &viewport);
+	VkViewport viewport = {};
+	viewport.x = 0.0f;
+	viewport.y = 0.0f;
+	viewport.width = (float)(pSwapchainExtent->width);
+	viewport.height = (float)(pSwapchainExtent->height);
+	viewport.minDepth = 0.0f;
+	viewport.maxDepth = 1.0f;
 
-        VkRect2D scissor = {};
-        scissor.offset = (VkOffset2D){0, 0};
-        scissor.extent = *swapchainExtent;
-        pTable->pfn_vkCmdSetScissor(*commandBuffer, 0, 1, &scissor);
+	pTable->pfn_vkCmdSetViewport(*pCommandBuffer, 0, 1, &viewport);
 
+	VkRect2D scissor = {};
+	scissor.offset = (VkOffset2D){0, 0};
+	scissor.extent = *pSwapchainExtent;
 
-            VkBuffer vertexBuffers[] = {*vertexBuffer};
-            VkDeviceSize offsets[] = {0};
-            pTable->pfn_vkCmdBindVertexBuffers(*commandBuffer, 0, 1, vertexBuffers, offsets);
+	pTable->pfn_vkCmdSetScissor(*pCommandBuffer, 0, 1, &scissor);
 
-            pTable->pfn_vkCmdBindIndexBuffer(*commandBuffer, *indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+	VkBuffer vertexBuffers[] = {*pVertexBuffer};
+	VkDeviceSize offsets[] = {0};
 
-            pTable->pfn_vkCmdBindDescriptorSets(*commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *pipelineLayout, 0, 1, &descriptorSets[currentFrame], 0, nullptr);
+	pTable->pfn_vkCmdBindVertexBuffers(*pCommandBuffer, 0, 1, vertexBuffers, offsets);
+	pTable->pfn_vkCmdBindIndexBuffer(*pCommandBuffer, *pIndexBuffer, 0, VK_INDEX_TYPE_UINT16);
 
-            pTable->pfn_vkCmdDrawIndexed(*commandBuffer, INDICES_SIZE, 1, 0, 0, 0);
+	pTable->pfn_vkCmdBindDescriptorSets(*pCommandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *pPipelineLayout, 0, 1, &pDescriptorSets[currentFrame], 0, nullptr);
 
+	pTable->pfn_vkCmdDrawIndexed(*pCommandBuffer, indices_size, 1, 0, 0, 0);
 
-        pTable->pfn_vkCmdEndRenderPass(*commandBuffer);
+	pTable->pfn_vkCmdEndRenderPass(*pCommandBuffer);
 
-        if (pTable->pfn_vkEndCommandBuffer(*commandBuffer) != VK_SUCCESS)
+	if (pTable->pfn_vkEndCommandBuffer(*pCommandBuffer) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to vkEndCommandBuffer()'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
-        }
+	}
 
 	return 0;
 }

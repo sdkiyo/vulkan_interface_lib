@@ -1,20 +1,20 @@
 #include "swapchain.h"
 
-int createFramebuffers(const LoaderTable *const pTable, const VkDevice *const device, const VkExtent2D *const swapchainExtent, const VkRenderPass *const renderPass, const VkImageView *const swapchainImageViews, VkFramebuffer* swapchainFramebuffers)
+int createFramebuffers( const LoaderTable *const pTable, const VkDevice *const pDevice, const VkExtent2D *const pSwapchainExtent, const VkRenderPass *const pRenderPass, const VkImageView *const pSwapchainImageViews, VkFramebuffer* pSwapchainFramebuffers)
 {
 	for (uint32_t i = 0; i < IMAGE_COUNT; i++) {
-		VkImageView attachments[] = { swapchainImageViews[i] };
+		VkImageView attachments[] = { pSwapchainImageViews[i] };
 
 		VkFramebufferCreateInfo framebufferInfo = {};
 		framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-		framebufferInfo.renderPass = *renderPass;
+		framebufferInfo.renderPass = *pRenderPass;
 		framebufferInfo.attachmentCount = (uint32_t) (sizeof(attachments) / sizeof(*attachments));
 		framebufferInfo.pAttachments = attachments;
-		framebufferInfo.width = swapchainExtent->width;// ??
-		framebufferInfo.height = swapchainExtent->height;// ??
+		framebufferInfo.width = pSwapchainExtent->width;// ??
+		framebufferInfo.height = pSwapchainExtent->height;// ??
 		framebufferInfo.layers = 1;
 
-		if (pTable->pfn_vkCreateFramebuffer(*device, &framebufferInfo, nullptr, &swapchainFramebuffers[i]) != VK_SUCCESS) {
+		if (pTable->pfn_vkCreateFramebuffer(*pDevice, &framebufferInfo, nullptr, &pSwapchainFramebuffers[i]) != VK_SUCCESS) {
 			fprintf(stderr, RED "%s(), line %d, 'failed to create framebuffer'" RESET_COLOR "\n", __func__, __LINE__);
 			return -1;
 		}

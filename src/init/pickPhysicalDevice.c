@@ -1,10 +1,10 @@
 #include "pre.h"
 
-int lvPickPhysicalDevice(const LoaderTable *const pTable, const VkInstance *const instance, VkPhysicalDevice *const physicalDevice)
+int pickPhysicalDevice(const LoaderTable *const pTable, const VkInstance *const pInstance, VkPhysicalDevice *const pPhysicalDevice)
 {
 	uint32_t deviceCount = 0;
 
-	pTable->pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, nullptr);
+	pTable->pfn_vkEnumeratePhysicalDevices(*pInstance, &deviceCount, nullptr);
 	if (deviceCount == 0)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'unable to find GPUs with vulkan support'" RESET_COLOR "\n", __func__, __LINE__);
@@ -12,7 +12,7 @@ int lvPickPhysicalDevice(const LoaderTable *const pTable, const VkInstance *cons
 	}
 
 	VkPhysicalDevice *devices = malloc(deviceCount * sizeof(VkPhysicalDevice));// ??
-	pTable->pfn_vkEnumeratePhysicalDevices(*instance, &deviceCount, devices);
+	pTable->pfn_vkEnumeratePhysicalDevices(*pInstance, &deviceCount, devices);
 
 //	VkPhysicalDeviceProperties deviceProperties;
 //	for (uint32_t i = 0; i < deviceCount; i++)
@@ -22,7 +22,7 @@ int lvPickPhysicalDevice(const LoaderTable *const pTable, const VkInstance *cons
 //		printf("physical device name: \033[36m%s\033[0m\n", deviceProperties.deviceName);
 //	}
 
-	*physicalDevice = devices[0];
+	*pPhysicalDevice = devices[0];
 	free(devices);
 
 	return 0;

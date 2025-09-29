@@ -1,9 +1,9 @@
 #include "renderSetup.h"
 
-int createRenderPass(const LoaderTable *const pTable, const VkDevice *const device, const VkFormat *const swapchainImageFormat, VkRenderPass* renderPass)
+int createRenderPass(const LoaderTable *const pTable, const VkDevice *const pDevice, const VkFormat *const pSwapchainImageFormat, VkRenderPass* pRenderPass)
 {
 	VkAttachmentDescription colorAttachment = {};
-	colorAttachment.format = *swapchainImageFormat;
+	colorAttachment.format = *pSwapchainImageFormat;
 	colorAttachment.samples = VK_SAMPLE_COUNT_1_BIT;
 	colorAttachment.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	colorAttachment.storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -38,7 +38,7 @@ int createRenderPass(const LoaderTable *const pTable, const VkDevice *const devi
 	renderPassInfo.dependencyCount = 1;
 	renderPassInfo.pDependencies = &dependency;
 
-	if (pTable->pfn_vkCreateRenderPass(*device, &renderPassInfo, nullptr, renderPass) != VK_SUCCESS)
+	if (pTable->pfn_vkCreateRenderPass(*pDevice, &renderPassInfo, nullptr, pRenderPass) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create renderPass'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;

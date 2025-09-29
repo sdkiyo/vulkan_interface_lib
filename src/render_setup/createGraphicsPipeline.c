@@ -2,15 +2,15 @@
 #include "vertex.h"
 #include "shader.h"
 
-int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *const device, VkPipelineLayout* pipelineLayout, VkPipeline* graphicsPipeline, const VkRenderPass *const renderPass, const VkDescriptorSetLayout *const descriptorSetLayout)
+int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *const pDevice, VkPipelineLayout* pPipelineLayout, VkPipeline* pGraphicsPipeline, const VkRenderPass *const pRenderPass, const VkDescriptorSetLayout *const pDescriptorSetLayout)
 {
 	uint32_t vert_code_size = 0;
 	uint32_t frag_code_size = 0;
 	char* vertShaderCode = getShaderCode("../shaders/vert.spv", &vert_code_size);
 	char* fragShaderCode = getShaderCode("../shaders/frag.spv", &frag_code_size);
 
-        VkShaderModule vertShaderModule = createShaderModule(pTable, device, vertShaderCode, vert_code_size);
-        VkShaderModule fragShaderModule = createShaderModule(pTable, device, fragShaderCode, frag_code_size);
+        VkShaderModule vertShaderModule = createShaderModule(pTable, pDevice, vertShaderCode, vert_code_size);
+        VkShaderModule fragShaderModule = createShaderModule(pTable, pDevice, fragShaderCode, frag_code_size);
 
         VkPipelineShaderStageCreateInfo vertShaderStageInfo = {};
         vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -93,10 +93,10 @@ int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *cons
         VkPipelineLayoutCreateInfo pipelineLayoutInfo = {};
         pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
         pipelineLayoutInfo.setLayoutCount = 1;
-        pipelineLayoutInfo.pSetLayouts = descriptorSetLayout;
+        pipelineLayoutInfo.pSetLayouts = pDescriptorSetLayout;
         pipelineLayoutInfo.pushConstantRangeCount = 0;
 
-        if (pTable->pfn_vkCreatePipelineLayout(*device, &pipelineLayoutInfo, nullptr, pipelineLayout) != VK_SUCCESS)
+        if (pTable->pfn_vkCreatePipelineLayout(*pDevice, &pipelineLayoutInfo, nullptr, pPipelineLayout) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create pipelineLayout'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
@@ -113,19 +113,19 @@ int createGraphicsPipeline(const LoaderTable *const pTable, const VkDevice *cons
         pipelineInfo.pMultisampleState = &multisampling;
         pipelineInfo.pColorBlendState = &colorBlending;
         pipelineInfo.pDynamicState = &dynamicState;
-        pipelineInfo.layout = *pipelineLayout;
-        pipelineInfo.renderPass = *renderPass;
+        pipelineInfo.layout = *pPipelineLayout;
+        pipelineInfo.renderPass = *pRenderPass;
         pipelineInfo.subpass = 0;
         pipelineInfo.basePipelineHandle = VK_NULL_HANDLE;
 
-        if (pTable->pfn_vkCreateGraphicsPipelines(*device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, graphicsPipeline) != VK_SUCCESS)
+        if (pTable->pfn_vkCreateGraphicsPipelines(*pDevice, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, pGraphicsPipeline) != VK_SUCCESS)
 	{
 		fprintf(stderr, RED "%s(), line %d, 'failed to create graphicsPipeline'" RESET_COLOR "\n", __func__, __LINE__);
 		return -1;
         }
 
-	pTable->pfn_vkDestroyShaderModule(*device, fragShaderModule, nullptr);
-	pTable->pfn_vkDestroyShaderModule(*device, vertShaderModule, nullptr);
+	pTable->pfn_vkDestroyShaderModule(*pDevice, fragShaderModule, nullptr);
+	pTable->pfn_vkDestroyShaderModule(*pDevice, vertShaderModule, nullptr);
 
 	return 0;
 }

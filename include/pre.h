@@ -5,46 +5,46 @@
 #include "vk.h"
 
 
-int lvCreateInstance(
+int createInstance(
 	const LoaderTable *const		pTable,
-	const char* const*			validationLayers,
+	const char* const*			ppValidationLayers,
 	const uint32_t				validationLayersCount,
-	const char* const*			extensions,
+	const char* const*			ppExtensions,
 	const uint32_t				extensionsCount,
-	VkInstance *const			instance);
+	VkInstance *const			pInstance);
 
 VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
 	VkDebugUtilsMessageSeverityFlagBitsEXT		severity,
 	VkDebugUtilsMessageTypeFlagsEXT 		type,
 	const VkDebugUtilsMessengerCallbackDataEXT*	callbackData,
-	void*						userData);
+	void*						pUserData);
 
 void fillDebugUtilsMessengerCreateInfo(
-	VkDebugUtilsMessengerCreateInfoEXT*	debugCreateInfo);
+	VkDebugUtilsMessengerCreateInfoEXT*	pDebugCreateInfo);
 
 int createDebugUtilsMessenger(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	VkDebugUtilsMessengerEXT *const		debugMessenger);
+	const VkInstance *const			pInstance,
+	VkDebugUtilsMessengerEXT *const		pDebugMessenger);
 
-int lvCreateSurface(
-	GLFWwindow *const			window,
-	const VkInstance *const			instance,
-	VkSurfaceKHR *const			surface);
+int createSurface(
+	GLFWwindow *const			pWindow,
+	const VkInstance *const			pInstance,
+	VkSurfaceKHR *const			pSurface);
 
-int lvPickPhysicalDevice(
+int pickPhysicalDevice(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	VkPhysicalDevice *const			physicalDevice);
+	const VkInstance *const			pInstance,
+	VkPhysicalDevice *const			pPhysicalDevice);
 
 int createLogicalDevice(
 	const LoaderTable *const		pTable,
-	const VkInstance *const			instance,
-	const char* const*			deviceExtensions,
+	const VkInstance *const			pInstance,
+	const char* const*			ppDeviceExtensions,
 	uint32_t				deviceExtensionsCount,
-	const VkPhysicalDevice *const		physicalDevice,
-	VkDevice *const				device,
-	VkQueue *const				queue);
+	const VkPhysicalDevice *const		pPhysicalDevice,
+	VkDevice *const				pDevice,
+	VkQueue *const				pQueue);
 
 
 #endif
